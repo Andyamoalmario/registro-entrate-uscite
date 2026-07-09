@@ -18,13 +18,30 @@ export interface Investment {
   updatedAt: string; // ISO date of last manual update
 }
 
-export interface Debt {
+export type DebtEntryType = "devo" | "mi_deve" | "ho_restituito" | "mi_ha_restituito";
+
+export const DEBT_TYPE_LABELS: Record<DebtEntryType, string> = {
+  devo: "Gli devo",
+  mi_deve: "Mi deve",
+  ho_restituito: "Gli ho restituito (rata)",
+  mi_ha_restituito: "Mi ha restituito (rata)",
+};
+
+// +1 increases how much they owe me, -1 increases how much I owe them
+export const DEBT_TYPE_SIGN: Record<DebtEntryType, 1 | -1> = {
+  devo: -1,
+  mi_deve: 1,
+  ho_restituito: 1,
+  mi_ha_restituito: -1,
+};
+
+export interface DebtEntry {
   id: string;
   person: string;
   amount: number;
+  type: DebtEntryType;
   note?: string;
-  date: string; // ISO date when the debt was recorded
-  paid: boolean;
+  date: string;
 }
 
 export const DEFAULT_EXPENSE_CATEGORIES = [

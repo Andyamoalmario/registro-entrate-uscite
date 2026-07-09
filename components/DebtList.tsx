@@ -1,91 +1,112 @@
 "use client";
 
-import { Debt } from "@/lib/types";
-import { formatEuro } from "@/lib/format";
+import { useState } from "react";
+import { DebtEntry, DEBT_TYPE_LABELS } from "@/lib/types";
+import { formatEuro, personBalances } from "@/lib/format";
 import { useLedgerStore } from "@/lib/store";
 
 export default function DebtList({
   debts,
   onEdit,
 }: {
-  debts: Debt[];
-  onEdit: (d: Debt) => void;
+  debts: DebtEntry[];
+  onEdit: (d: DebtEntry) => void;
 }) {
   const removeDebt = useLedgerStore((s) => s.removeDebt);
-  const updateDebt = useLedgerStore((s) => s.updateDebt);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   if (debts.length === 0) {
     return (
       <div className="border border-dashed border-rule rounded-2xl p-8 text-center text-ink-soft text-sm">
-        Nessun debito registrato. Aggiungine uno dal modulo qui accanto.
+        Nessuna voce registrata. Aggiungine una dal modulo qui accanto.
       </div>
     );
   }
 
-  const sorted = [...debts].sort((a, b) => {
-    if (a.paid !== b.paid) return a.paid ? 1 : -1;
-    return b.date.localeCompare(a.date);
-  });
+  const balances = personBalances(debts);
 
   return (
-    <div className="border border-rule rounded-2xl overflow-hidden bg-paper-raised overflow-x-auto">
-      <table className="w-full min-w-[560px] text-sm">
-        <thead>
-          <tr className="border-b border-rule text-left text-xs uppercase tracking-wide text-ink-soft">
-            <th className="py-2 px-4 font-medium">Persona</th>
-            <th className="py-2 px-4 font-medium">Nota</th>
-            <th className="py-2 px-4 font-medium text-right">Importo</th>
-            <th className="py-2 px-4 font-medium text-center">Stato</th>
-            <th className="py-2 px-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((d) => (
-            <tr
-              key={d.id}
-              className={`border-b border-rule-soft last:border-0 group ${
-                d.paid ? "opacity-50" : ""
-              }`}
+    <div className="space-y-3">
+      {balances.map((b) => {
+        const isOpen = expanded === b.person;
+        const positive = b.net > 0;
+        const settled = Math.abs(b.net) < 0.005;
+        return (
+          <div
+            key={b.person}
+            className="border border-rule rounded-2xl overflow-hidden bg-paper-raised"
+          >
+            <button
+              onClick={() => setExpanded(isOpen ? null : b.person)}
+              className="w-full flex items-center justify-between px-4 py-3 text-left"
             >
-              <td className="py-2.5 px-4 font-medium">{d.person}</td>
-              <td className="py-2.5 px-4 text-ink-soft truncate max-w-[180px]">
-                {d.note ?? ""}
-              </td>
-              <td className="py-2.5 px-4 tabular text-right font-medium text-expense">
-                {formatEuro(d.amount)}
-              </td>
-              <td className="py-2.5 px-4 text-center">
-                <button
-                  onClick={() => updateDebt(d.id, { paid: !d.paid })}
-                  className={`text-xs px-2.5 py-1 rounded-full font-medium transition-colors ${
-                    d.paid
-                      ? "bg-income-soft text-income"
-                      : "bg-expense-soft text-expense"
-                  }`}
+              <div>
+                <p className="font-medium text-ink">{b.person}</p>
+                <p className="text-xs text-ink-soft">
+                  {settled
+                    ? "In pari"
+                    : positive
+                    ? "Ti deve"
+                    : "Gli devi"}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <span
+                  className="tabular text-lg font-medium"
+                  style={{
+                    color: settled
+                      ? "var(--ink-soft)"
+                      : positive
+                      ? "var(--income)"
+                      : "var(--expense)",
+                  }}
                 >
-                  {d.paid ? "Pagato" : "Da pagare"}
-                </button>
-              </td>
-              <td className="py-2.5 px-2 text-right whitespace-nowrap">
-                <button
-                  onClick={() => onEdit(d)}
-                  aria-label="Modifica debito"
-                  className="text-ink-soft hover:text-ink text-xs px-1.5 opacity-70 hover:opacity-100 transition-opacity"
-                >
-                  ✎
-                </button>
-                <button
-                  onClick={() => removeDebt(d.id)}
-                  aria-label="Elimina debito"
-                  className="text-ink-soft hover:text-expense text-xs px-1.5 opacity-70 hover:opacity-100 transition-opacity"
-                >
-                  ✕
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  {formatEuro(Math.abs(b.net))}
+                </span>
+                <span className="text-ink-soft text-xs">{isOpen ? "▲" : "▼"}</span>
+              </div>
+            </button>
+
+            {isOpen && (
+              <div className="border-t border-rule-soft">
+                {b.entries.map((e) => (
+                  <div
+                    key={e.id}
+                    className="flex items-center justify-between px-4 py-2.5 border-b border-rule-soft last:border-0 text-sm group"
+                  >
+                    <div>
+                      <p className="text-ink-soft text-xs">
+                        {DEBT_TYPE_LABELS[e.type]} · {e.date.slice(8, 10)}/
+                        {e.date.slice(5, 7)}/{e.date.slice(0, 4)}
+                      </p>
+                      {e.note && <p className="text-ink-soft text-xs">{e.note}</p>}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="tabular font-medium">
+                        {formatEuro(e.amount)}
+                      </span>
+                      <button
+                        onClick={() => onEdit(e)}
+                        aria-label="Modifica voce"
+                        className="text-ink-soft hover:text-ink text-xs px-1 opacity-70 hover:opacity-100"
+                      >
+                        ✎
+                      </button>
+                      <button
+                        onClick={() => removeDebt(e.id)}
+                        aria-label="Elimina voce"
+                        className="text-ink-soft hover:text-expense text-xs px-1 opacity-70 hover:opacity-100"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

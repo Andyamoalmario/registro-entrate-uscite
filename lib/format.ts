@@ -1,4 +1,4 @@
-import { Transaction, Investment } from "./types";
+import { Transaction, Investment, DebtEntry, DEBT_TYPE_SIGN } from "./types";
 
 export function formatEuro(value: number): string {
   return new Intl.NumberFormat("it-IT", {
@@ -345,4 +345,47 @@ function isoDate(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
     d.getDate()
   ).padStart(2, "0")}`;
+}
+
+export interface PersonBalance {
+  person: string;
+  net: number;
+  entries: DebtEntry[];
+}
+
+export function personBalances(debts: DebtEntry[]): PersonBalance[] {
+  const map = new Map<string, DebtEntry[]>();
+  debts.forEach((d) => {
+    const list = map.get(d.person) ?? [];
+    list.push(d);
+    map.set(d.person, list);
+  });
+
+  return Array.from(map.entries())
+    .map(([person, entries]) => {
+      const net = entries.reduce(
+        (sum, e) => sum + (DEBT_TYPE_SIGN[e.type] ?? -1) * e.amount,
+        0
+      );
+      return {
+        person,
+        net,
+        entries: [...entries].sort((a, b) => b.date.localeCompare(a.date)),
+      };
+    })
+    .sort((a, b) => Math.abs(b.net) - Math.abs(a.net));
+}
+
+export function debtTotals(debts: DebtEntry[]): {
+  owedByMe: number;
+  owedToMe: number;
+} {
+  const balances = personBalances(debts);
+  const owedByMe = balances
+    .filter((b) => b.net < 0)
+    .reduce((sum, b) => sum + Math.abs(b.net), 0);
+  const owedToMe = balances
+    .filter((b) => b.net > 0)
+    .reduce((sum, b) => sum + b.net, 0);
+  return { owedByMe, owedToMe };
 }

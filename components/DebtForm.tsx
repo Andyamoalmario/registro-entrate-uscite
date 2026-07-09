@@ -2,23 +2,34 @@
 
 import { useState } from "react";
 import { useLedgerStore } from "@/lib/store";
-import { Debt } from "@/lib/types";
+import { DEBT_TYPE_LABELS, DebtEntry, DebtEntryType } from "@/lib/types";
 import { todayISO } from "@/lib/format";
+
+const TYPE_ORDER: DebtEntryType[] = [
+  "devo",
+  "mi_deve",
+  "ho_restituito",
+  "mi_ha_restituito",
+];
 
 export default function DebtForm({
   editing,
   onDone,
 }: {
-  editing?: Debt | null;
+  editing?: DebtEntry | null;
   onDone?: () => void;
 }) {
   const addDebt = useLedgerStore((s) => s.addDebt);
   const updateDebt = useLedgerStore((s) => s.updateDebt);
+  const debts = useLedgerStore((s) => s.debts);
 
   const [person, setPerson] = useState(editing?.person ?? "");
+  const [type, setType] = useState<DebtEntryType>(editing?.type ?? "devo");
   const [amount, setAmount] = useState(editing ? String(editing.amount) : "");
   const [note, setNote] = useState(editing?.note ?? "");
   const [date, setDate] = useState(editing?.date ?? todayISO());
+
+  const knownPeople = Array.from(new Set(debts.map((d) => d.person))).sort();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -28,6 +39,7 @@ export default function DebtForm({
     if (editing) {
       updateDebt(editing.id, {
         person: person.trim(),
+        type,
         amount: parsed,
         note: note.trim() || undefined,
         date,
@@ -35,10 +47,10 @@ export default function DebtForm({
     } else {
       addDebt({
         person: person.trim(),
+        type,
         amount: parsed,
         note: note.trim() || undefined,
         date,
-        paid: false,
       });
       setPerson("");
       setAmount("");
@@ -55,7 +67,7 @@ export default function DebtForm({
     >
       {editing && (
         <div className="flex items-center justify-between text-xs text-ink-soft">
-          <span>Stai modificando un debito</span>
+          <span>Stai modificando una voce</span>
           <button
             type="button"
             onClick={() => onDone?.()}
@@ -67,16 +79,41 @@ export default function DebtForm({
       )}
 
       <label className="block">
-        <span className="text-xs text-ink-soft">A chi devi i soldi</span>
+        <span className="text-xs text-ink-soft">Persona</span>
         <input
           type="text"
+          list="debt-people"
           value={person}
           onChange={(e) => setPerson(e.target.value)}
           placeholder="es. Marco"
           required
           className="mt-1 w-full border border-rule rounded-xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
         />
+        <datalist id="debt-people">
+          {knownPeople.map((p) => (
+            <option key={p} value={p} />
+          ))}
+        </datalist>
       </label>
+
+      <div className="grid grid-cols-2 gap-2">
+        {TYPE_ORDER.map((t) => (
+          <button
+            key={t}
+            type="button"
+            onClick={() => setType(t)}
+            className={`py-2 text-xs font-medium rounded-xl border transition-colors ${
+              type === t
+                ? t === "devo" || t === "mi_ha_restituito"
+                  ? "bg-expense text-paper-raised border-expense"
+                  : "bg-income text-paper-raised border-income"
+                : "border-rule text-ink-soft hover:border-ink"
+            }`}
+          >
+            {DEBT_TYPE_LABELS[t]}
+          </button>
+        ))}
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         <label className="block">
@@ -118,7 +155,7 @@ export default function DebtForm({
         type="submit"
         className="w-full py-2.5 bg-ink text-paper-raised text-sm font-medium rounded-xl hover:bg-ink/90 transition-colors"
       >
-        {editing ? "Salva modifiche" : "Aggiungi debito"}
+        {editing ? "Salva modifiche" : "Aggiungi voce"}
       </button>
     </form>
   );
