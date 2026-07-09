@@ -22,7 +22,7 @@ export default function AnalistaPage() {
   }, []);
 
   if (!mounted) {
-    return <main className="max-w-3xl w-full mx-auto px-6 py-8" />;
+    return <main className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8" />;
   }
 
   const advice = buildAdvice(transactions, investments);
@@ -31,7 +31,7 @@ export default function AnalistaPage() {
   const fundMonths = emergencyFundMonths(transactions);
 
   return (
-    <main className="max-w-3xl w-full mx-auto px-6 py-8 space-y-6">
+    <main className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       <div>
         <h1 className="font-display italic text-3xl text-ink">
           Analista finanziario

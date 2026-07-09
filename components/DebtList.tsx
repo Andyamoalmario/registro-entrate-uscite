@@ -28,8 +28,8 @@ export default function DebtList({
   });
 
   return (
-    <div className="border border-rule rounded-2xl overflow-hidden bg-paper-raised">
-      <table className="w-full text-sm">
+    <div className="border border-rule rounded-2xl overflow-hidden bg-paper-raised overflow-x-auto">
+      <table className="w-full min-w-[560px] text-sm">
         <thead>
           <tr className="border-b border-rule text-left text-xs uppercase tracking-wide text-ink-soft">
             <th className="py-2 px-4 font-medium">Persona</th>
@@ -70,14 +70,14 @@ export default function DebtList({
                 <button
                   onClick={() => onEdit(d)}
                   aria-label="Modifica debito"
-                  className="text-ink-soft hover:text-ink text-xs px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="text-ink-soft hover:text-ink text-xs px-1.5 opacity-70 hover:opacity-100 transition-opacity"
                 >
                   ✎
                 </button>
                 <button
                   onClick={() => removeDebt(d.id)}
                   aria-label="Elimina debito"
-                  className="text-ink-soft hover:text-expense text-xs px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="text-ink-soft hover:text-expense text-xs px-1.5 opacity-70 hover:opacity-100 transition-opacity"
                 >
                   ✕
                 </button>

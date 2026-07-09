@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Work_Sans } from "next/font/google";
 import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
+import MobileHeader from "@/components/MobileHeader";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4B4468",
+  themeColor: "#355A70",
 };
 
 export default function RootLayout({
@@ -37,7 +39,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex">
         <Sidebar />
-        <div className="flex-1 min-h-screen">{children}</div>
+        <div className="flex-1 min-h-screen pb-16 md:pb-0">
+          <MobileHeader />
+          {children}
+        </div>
+        <MobileNav />
       </body>
     </html>
   );

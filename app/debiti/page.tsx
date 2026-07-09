@@ -18,14 +18,14 @@ export default function DebitiPage() {
   }, []);
 
   if (!mounted) {
-    return <main className="max-w-5xl w-full mx-auto px-6 py-8" />;
+    return <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8" />;
   }
 
   const outstanding = debts.filter((d) => !d.paid).reduce((sum, d) => sum + d.amount, 0);
   const paid = debts.filter((d) => d.paid).reduce((sum, d) => sum + d.amount, 0);
 
   return (
-    <main className="max-w-5xl w-full mx-auto px-6 py-8 space-y-6">
+    <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       <DebtSummary outstanding={outstanding} paid={paid} />
 
       <div className="grid md:grid-cols-[1fr_320px] gap-6 items-start">

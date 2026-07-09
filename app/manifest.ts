@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Il tuo registro personale di entrate, uscite e investimenti",
     start_url: "/",
     display: "standalone",
-    background_color: "#FAF7FC",
-    theme_color: "#4B4468",
+    background_color: "#F5FAFC",
+    theme_color: "#355A70",
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },

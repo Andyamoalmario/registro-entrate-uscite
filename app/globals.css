@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  /* Pastel palette — azzurro, verde, giallo, lilla, rosa */
-  --ink: #4B4468;          /* soft indigo — headers, primary text */
-  --ink-soft: #8A82A0;     /* secondary text, muted lilac-grey */
-  --paper: #FAF7FC;        /* very light lilac-white background */
+  /* Pastel palette — azzurro come colore principale */
+  --ink: #355A70;          /* azzurro scuro/petrolio — headers, primary text, pannelli */
+  --ink-soft: #6E8A99;     /* secondary text, grigio-azzurro */
+  --paper: #F5FAFC;        /* azzurro-bianco molto chiaro, sfondo */
   --paper-raised: #FFFFFF; /* card surface, pure white */
-  --rule: #E6DEF2;         /* hairline, pastel lilac */
-  --rule-soft: #F0EBF7;
+  --rule: #D9EAF1;         /* hairline, azzurro pastello */
+  --rule-soft: #EAF4F8;
+  --accent-soft: #E1F0F7;  /* tinta azzurro chiaro per stati attivi */
   --income: #5FA97F;       /* pastel green, deep enough for contrast */
   --income-soft: #DFF3E7;
   --expense: #D9789A;      /* pastel rose */
@@ -26,6 +27,7 @@
   --color-paper-raised: var(--paper-raised);
   --color-rule: var(--rule);
   --color-rule-soft: var(--rule-soft);
+  --color-accent-soft: var(--accent-soft);
   --color-income: var(--income);
   --color-income-soft: var(--income-soft);
   --color-expense: var(--expense);

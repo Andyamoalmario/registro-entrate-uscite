@@ -26,15 +26,15 @@ export default function MonthlyBarChart({ data }: { data: Point[] }) {
       </p>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} barGap={4}>
-          <CartesianGrid vertical={false} stroke="#F0EBF7" />
+          <CartesianGrid vertical={false} stroke="#EAF4F8" />
           <XAxis
             dataKey="label"
-            tick={{ fill: "#8A82A0", fontSize: 12 }}
-            axisLine={{ stroke: "#E6DEF2" }}
+            tick={{ fill: "#6E8A99", fontSize: 12 }}
+            axisLine={{ stroke: "#D9EAF1" }}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: "#8A82A0", fontSize: 11 }}
+            tick={{ fill: "#6E8A99", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             width={40}
@@ -43,7 +43,7 @@ export default function MonthlyBarChart({ data }: { data: Point[] }) {
             formatter={(value) => formatEuro(Number(value))}
             contentStyle={{
               background: "#FFFFFF",
-              border: "1px solid #E6DEF2",
+              border: "1px solid #D9EAF1",
               borderRadius: 10,
               fontSize: 13,
             }}

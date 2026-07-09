@@ -10,7 +10,7 @@ const PALETTE = [
   "#D1A63C", // giallo
   "#A78FD1", // lilla
   "#E8A87C", // pesca
-  "#8A82A0", // lilla-grigio
+  "#6E8A99", // grigio-azzurro
 ];
 
 export default function CategoryDonut({
@@ -55,7 +55,7 @@ export default function CategoryDonut({
               formatter={(value) => formatEuro(Number(value))}
               contentStyle={{
                 background: "#FFFFFF",
-                border: "1px solid #E6DEF2",
+                border: "1px solid #D9EAF1",
                 borderRadius: 10,
                 fontSize: 13,
               }}

@@ -38,12 +38,12 @@ export default function AnalyticsPage() {
   }, []);
 
   if (!mounted) {
-    return <main className="max-w-5xl w-full mx-auto px-6 py-8" />;
+    return <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8" />;
   }
 
   if (transactions.length === 0) {
     return (
-      <main className="max-w-5xl w-full mx-auto px-6 py-8">
+      <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <h1 className="font-display italic text-3xl text-ink mb-4">Analytics</h1>
         <div className="border border-dashed border-rule rounded-2xl p-8 text-center text-ink-soft text-sm">
           Aggiungi qualche movimento nel Registro per iniziare a vedere le
@@ -63,7 +63,7 @@ export default function AnalyticsPage() {
   const maxCategoryTotal = topCategories[0]?.total ?? 1;
 
   return (
-    <main className="max-w-5xl w-full mx-auto px-6 py-8 space-y-6">
+    <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       <h1 className="font-display italic text-3xl text-ink">Analytics</h1>
 
       <div className="grid md:grid-cols-3 gap-4">

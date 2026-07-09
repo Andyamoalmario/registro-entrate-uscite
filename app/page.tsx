@@ -31,7 +31,7 @@ export default function Home() {
   }, []);
 
   if (!mounted) {
-    return <main className="max-w-5xl w-full mx-auto px-6 py-8" />;
+    return <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8" />;
   }
 
   const monthKeys = allMonthKeys(transactions);
@@ -41,7 +41,7 @@ export default function Home() {
   const expenseBreakdown = categoryBreakdown(monthTx, "uscita");
 
   return (
-    <main className="max-w-5xl w-full mx-auto px-6 py-8 space-y-6">
+    <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       <MonthSelector
         keys={monthKeys}
         selected={selectedMonth}
