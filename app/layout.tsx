@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Work_Sans, Space_Mono } from "next/font/google";
+import Sidebar from "@/components/Sidebar";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -36,7 +37,10 @@ export default function RootLayout({
       lang="it"
       className={`${cormorant.variable} ${workSans.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex">
+        <Sidebar />
+        <div className="flex-1 min-h-screen">{children}</div>
+      </body>
     </html>
   );
 }

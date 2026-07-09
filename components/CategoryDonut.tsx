@@ -4,13 +4,13 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { formatEuro } from "@/lib/format";
 
 const PALETTE = [
-  "#B5715F",
-  "#B8944A",
-  "#7C6B79",
-  "#9C8AA5",
-  "#C08F72",
-  "#8A9B7E",
-  "#A57C89",
+  "#D9789A", // rosa
+  "#7FB6D9", // azzurro
+  "#5FA97F", // verde
+  "#D1A63C", // giallo
+  "#A78FD1", // lilla
+  "#E8A87C", // pesca
+  "#8A82A0", // lilla-grigio
 ];
 
 export default function CategoryDonut({
@@ -54,8 +54,8 @@ export default function CategoryDonut({
             <Tooltip
               formatter={(value) => formatEuro(Number(value))}
               contentStyle={{
-                background: "#FFFBF5",
-                border: "1px solid #E3D3CE",
+                background: "#FFFFFF",
+                border: "1px solid #E6DEF2",
                 borderRadius: 10,
                 fontSize: 13,
               }}

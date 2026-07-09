@@ -82,6 +82,114 @@ export function categoryBreakdown(
     .sort((a, b) => b.total - a.total);
 }
 
+export function todayISO(): string {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(
+    now.getDate()
+  ).padStart(2, "0")}`;
+}
+
+export function suggestedCategories(
+  transactions: Transaction[],
+  kind: "entrata" | "uscita",
+  defaults: string[]
+): string[] {
+  const used = new Set(
+    transactions.filter((t) => t.kind === kind).map((t) => t.category)
+  );
+  defaults.forEach((c) => used.add(c));
+  return Array.from(used).sort((a, b) => a.localeCompare(b));
+}
+
+export interface MonthComparison {
+  currentLabel: string;
+  previousLabel: string;
+  currentUscite: number;
+  previousUscite: number;
+  deltaPct: number | null;
+}
+
+export function compareToLastMonth(transactions: Transaction[]): MonthComparison {
+  const now = new Date();
+  const curKey = currentMonthKey();
+  const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevKey = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}`;
+  const curUscite = monthTotals(transactionsForMonth(transactions, curKey)).uscite;
+  const prevUscite = monthTotals(transactionsForMonth(transactions, prevKey)).uscite;
+  const deltaPct = prevUscite > 0 ? ((curUscite - prevUscite) / prevUscite) * 100 : null;
+  return {
+    currentLabel: monthLabel(curKey),
+    previousLabel: monthLabel(prevKey),
+    currentUscite: curUscite,
+    previousUscite: prevUscite,
+    deltaPct,
+  };
+}
+
+export interface CategoryTrend {
+  category: string;
+  current: number;
+  previous: number;
+  deltaPct: number | null;
+  delta: number;
+}
+
+export function categoryTrends(transactions: Transaction[]): CategoryTrend[] {
+  const now = new Date();
+  const curKey = currentMonthKey();
+  const prevDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevKey = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}`;
+  const curBreakdown = categoryBreakdown(transactionsForMonth(transactions, curKey), "uscita");
+  const prevBreakdown = categoryBreakdown(
+    transactionsForMonth(transactions, prevKey),
+    "uscita"
+  );
+  const prevMap = new Map(prevBreakdown.map((c) => [c.category, c.total]));
+  const categories = new Set([
+    ...curBreakdown.map((c) => c.category),
+    ...prevBreakdown.map((c) => c.category),
+  ]);
+  const curMap = new Map(curBreakdown.map((c) => [c.category, c.total]));
+
+  return Array.from(categories)
+    .map((category) => {
+      const current = curMap.get(category) ?? 0;
+      const previous = prevMap.get(category) ?? 0;
+      const delta = current - previous;
+      const deltaPct = previous > 0 ? (delta / previous) * 100 : null;
+      return { category, current, previous, deltaPct, delta };
+    })
+    .sort((a, b) => b.delta - a.delta);
+}
+
+export function averageMonthlyExpense(transactions: Transaction[], n = 6): number {
+  const data = lastNMonthsData(transactions, n);
+  const total = data.reduce((sum, m) => sum + m.uscite, 0);
+  return data.length > 0 ? total / data.length : 0;
+}
+
+export function largestExpense(transactions: Transaction[]): Transaction | null {
+  const expenses = transactions.filter((t) => t.kind === "uscita");
+  if (expenses.length === 0) return null;
+  return expenses.reduce((max, t) => (t.amount > max.amount ? t : max), expenses[0]);
+}
+
+export function allTimeCategoryBreakdown(
+  transactions: Transaction[],
+  kind: "entrata" | "uscita",
+  months = 6
+): { category: string; total: number }[] {
+  const now = new Date();
+  const cutoff = new Date(now.getFullYear(), now.getMonth() - (months - 1), 1);
+  const recent = transactions.filter((t) => new Date(t.date) >= cutoff);
+  return categoryBreakdown(recent, kind);
+}
 export function lastNMonthsData(
   transactions: Transaction[],
   n: number

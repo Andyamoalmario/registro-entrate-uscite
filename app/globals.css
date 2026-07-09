@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  /* Atelier palette — graceful, warm, no literal pink */
-  --ink: #4A3B4C;          /* deep plum — headers, primary text */
-  --ink-soft: #7C6B79;     /* secondary text, warm mauve-grey */
-  --paper: #F7F1EA;        /* warm ivory background */
-  --paper-raised: #FFFBF5; /* card surface, soft cream */
-  --rule: #E3D3CE;         /* hairline, dusty rose-taupe */
-  --rule-soft: #EEE2DB;
-  --income: #74886A;       /* muted sage green */
-  --income-soft: #E9EEE4;
-  --expense: #B5715F;      /* warm muted clay — not pink, not red */
-  --expense-soft: #F3E4DE;
-  --invest: #B8944A;       /* antique gold */
-  --invest-soft: #F2E9D4;
+  /* Pastel palette — azzurro, verde, giallo, lilla, rosa */
+  --ink: #4B4468;          /* soft indigo — headers, primary text */
+  --ink-soft: #8A82A0;     /* secondary text, muted lilac-grey */
+  --paper: #FAF7FC;        /* very light lilac-white background */
+  --paper-raised: #FFFFFF; /* card surface, pure white */
+  --rule: #E6DEF2;         /* hairline, pastel lilac */
+  --rule-soft: #F0EBF7;
+  --income: #5FA97F;       /* pastel green, deep enough for contrast */
+  --income-soft: #DFF3E7;
+  --expense: #D9789A;      /* pastel rose */
+  --expense-soft: #FBE3E9;
+  --invest: #D1A63C;       /* pastel yellow/gold */
+  --invest-soft: #FBF0D2;
 
   --font-display: "Cormorant Garamond", serif;
   --font-body: "Work Sans", sans-serif;

@@ -6,8 +6,10 @@ import { useLedgerStore } from "@/lib/store";
 
 export default function TransactionList({
   transactions,
+  onEdit,
 }: {
   transactions: Transaction[];
+  onEdit: (t: Transaction) => void;
 }) {
   const removeTransaction = useLedgerStore((s) => s.removeTransaction);
 
@@ -33,7 +35,7 @@ export default function TransactionList({
         </thead>
         <tbody>
           {transactions.map((t) => (
-            <tr key={t.id} className="border-b border-rule-soft last:border-0">
+            <tr key={t.id} className="border-b border-rule-soft last:border-0 group">
               <td className="py-2.5 px-4 tabular text-ink-soft">
                 {t.date.slice(8, 10)}/{t.date.slice(5, 7)}
               </td>
@@ -49,11 +51,18 @@ export default function TransactionList({
                 {t.kind === "entrata" ? "+" : "-"}
                 {formatEuro(t.amount)}
               </td>
-              <td className="py-2.5 px-2 text-right">
+              <td className="py-2.5 px-2 text-right whitespace-nowrap">
+                <button
+                  onClick={() => onEdit(t)}
+                  aria-label="Modifica movimento"
+                  className="text-ink-soft hover:text-ink text-xs px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  ✎
+                </button>
                 <button
                   onClick={() => removeTransaction(t.id)}
                   aria-label="Elimina movimento"
-                  className="text-ink-soft hover:text-expense text-xs px-2"
+                  className="text-ink-soft hover:text-expense text-xs px-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   ✕
                 </button>

@@ -26,15 +26,15 @@ export default function MonthlyBarChart({ data }: { data: Point[] }) {
       </p>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} barGap={4}>
-          <CartesianGrid vertical={false} stroke="#EEE2DB" />
+          <CartesianGrid vertical={false} stroke="#F0EBF7" />
           <XAxis
             dataKey="label"
-            tick={{ fill: "#7C6B79", fontSize: 12 }}
-            axisLine={{ stroke: "#E3D3CE" }}
+            tick={{ fill: "#8A82A0", fontSize: 12 }}
+            axisLine={{ stroke: "#E6DEF2" }}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: "#7C6B79", fontSize: 11 }}
+            tick={{ fill: "#8A82A0", fontSize: 11 }}
             axisLine={false}
             tickLine={false}
             width={40}
@@ -42,14 +42,14 @@ export default function MonthlyBarChart({ data }: { data: Point[] }) {
           <Tooltip
             formatter={(value) => formatEuro(Number(value))}
             contentStyle={{
-              background: "#FFFBF5",
-              border: "1px solid #E3D3CE",
+              background: "#FFFFFF",
+              border: "1px solid #E6DEF2",
               borderRadius: 10,
               fontSize: 13,
             }}
           />
-          <Bar dataKey="entrate" fill="#74886A" radius={[6, 6, 0, 0]} />
-          <Bar dataKey="uscite" fill="#B5715F" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="entrate" fill="#5FA97F" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="uscite" fill="#D9789A" radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

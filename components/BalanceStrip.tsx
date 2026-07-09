@@ -22,7 +22,7 @@ export default function BalanceStrip({
         </p>
         <p
           className="font-display italic text-5xl sm:text-6xl font-semibold leading-none"
-          style={{ color: positive ? "#A9C09A" : "#E3B29E" }}
+          style={{ color: positive ? "#8FD1AC" : "#F0A8C0" }}
         >
           {positive ? "+" : ""}
           {formatEuro(saldo)}
@@ -33,7 +33,7 @@ export default function BalanceStrip({
           <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
             Entrate
           </p>
-          <p className="tabular text-lg" style={{ color: "#A9C09A" }}>
+          <p className="tabular text-lg" style={{ color: "#8FD1AC" }}>
             {formatEuro(entrate)}
           </p>
         </div>
@@ -41,7 +41,7 @@ export default function BalanceStrip({
           <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
             Uscite
           </p>
-          <p className="tabular text-lg" style={{ color: "#E3B29E" }}>
+          <p className="tabular text-lg" style={{ color: "#F0A8C0" }}>
             {formatEuro(uscite)}
           </p>
         </div>
