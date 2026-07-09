@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Work_Sans } from "next/font/google";
 import Sidebar from "@/components/Sidebar";
 import "./globals.css";
@@ -17,8 +17,12 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Registro | Entrate, uscite e investimenti",
+  title: "Saldo | Entrate, uscite e investimenti",
   description: "Il tuo registro personale di entrate, uscite e investimenti",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#4B4468",
 };
 
 export default function RootLayout({
