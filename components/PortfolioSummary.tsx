@@ -14,31 +14,34 @@ export default function PortfolioSummary({
   const positive = gain >= 0;
 
   return (
-    <div className="torn-edge bg-ink text-paper-raised rounded-sm px-6 py-5 flex flex-wrap items-end justify-between gap-6">
+    <div className="scallop-edge bg-ink text-paper-raised rounded-2xl px-7 py-6 flex flex-wrap items-end justify-between gap-6">
       <div>
-        <p className="text-xs uppercase tracking-widest text-paper-raised/60 mb-1">
+        <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1.5 font-medium">
           Valore portafoglio
         </p>
-        <p className="tabular text-4xl sm:text-5xl font-semibold" style={{ color: "#E8D89A" }}>
+        <p
+          className="font-display italic text-5xl sm:text-6xl font-semibold leading-none"
+          style={{ color: "#E3CD8E" }}
+        >
           {formatEuro(current)}
         </p>
       </div>
       <div className="flex gap-8">
         <div>
-          <p className="text-xs uppercase tracking-widest text-paper-raised/60 mb-1">
+          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
             Capitale investito
           </p>
-          <p className="tabular text-lg font-medium text-paper-raised/90">
+          <p className="tabular text-lg text-paper-raised/90">
             {formatEuro(invested)}
           </p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-widest text-paper-raised/60 mb-1">
+          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
             Guadagno/Perdita
           </p>
           <p
-            className="tabular text-lg font-medium"
-            style={{ color: positive ? "#8FBF9F" : "#E4998A" }}
+            className="tabular text-lg"
+            style={{ color: positive ? "#A9C09A" : "#E3B29E" }}
           >
             {positive ? "+" : ""}
             {formatEuro(gain)} ({positive ? "+" : ""}

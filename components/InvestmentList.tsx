@@ -48,7 +48,7 @@ function EditableValue({ investment }: { investment: Investment }) {
         onChange={(e) => setValue(e.target.value)}
         onBlur={save}
         onKeyDown={(e) => e.key === "Enter" && save()}
-        className="tabular w-28 border border-ink rounded-sm px-2 py-1 bg-paper text-right"
+        className="tabular w-28 border border-ink rounded-2xl px-2 py-1 bg-paper text-right"
       />
     );
   }
@@ -73,14 +73,14 @@ export default function InvestmentList({
 
   if (investments.length === 0) {
     return (
-      <div className="border border-dashed border-rule rounded-sm p-8 text-center text-ink-soft text-sm">
+      <div className="border border-dashed border-rule rounded-2xl p-8 text-center text-ink-soft text-sm">
         Nessun investimento ancora. Aggiungine uno dal modulo qui accanto.
       </div>
     );
   }
 
   return (
-    <div className="border border-rule rounded-sm overflow-hidden bg-paper-raised">
+    <div className="border border-rule rounded-2xl overflow-hidden bg-paper-raised">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-rule text-left text-xs uppercase tracking-wide text-ink-soft">

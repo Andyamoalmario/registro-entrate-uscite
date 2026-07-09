@@ -39,7 +39,7 @@ export default function InvestmentForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-paper-raised border border-rule rounded-sm p-5 space-y-4"
+      className="bg-paper-raised border border-rule rounded-2xl p-5 space-y-4"
     >
       <label className="block">
         <span className="text-xs text-ink-soft">Nome</span>
@@ -49,7 +49,7 @@ export default function InvestmentForm() {
           onChange={(e) => setName(e.target.value)}
           placeholder="es. ETF MSCI World"
           required
-          className="mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+          className="mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
         />
       </label>
 
@@ -58,7 +58,7 @@ export default function InvestmentForm() {
         <select
           value={type}
           onChange={(e) => setType(e.target.value as Investment["type"])}
-          className="mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+          className="mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
         >
           {TYPES.map((t) => (
             <option key={t} value={t}>
@@ -78,7 +78,7 @@ export default function InvestmentForm() {
             onChange={(e) => setInvested(e.target.value)}
             placeholder="0,00"
             required
-            className="tabular mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+            className="tabular mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
           />
         </label>
         <label className="block">
@@ -90,14 +90,14 @@ export default function InvestmentForm() {
             onChange={(e) => setCurrentValue(e.target.value)}
             placeholder="0,00"
             required
-            className="tabular mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+            className="tabular mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
           />
         </label>
       </div>
 
       <button
         type="submit"
-        className="w-full py-2.5 bg-ink text-paper-raised text-sm font-medium rounded-sm hover:bg-ink/90 transition-colors"
+        className="w-full py-2.5 bg-ink text-paper-raised text-sm font-medium rounded-2xl hover:bg-ink/90 transition-colors"
       >
         Aggiungi investimento
       </button>

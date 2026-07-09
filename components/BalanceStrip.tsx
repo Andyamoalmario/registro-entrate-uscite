@@ -15,18 +15,14 @@ export default function BalanceStrip({
 }) {
   const positive = saldo >= 0;
   return (
-    <div className="torn-edge bg-ink text-paper-raised rounded-sm px-6 py-5 flex flex-wrap items-end justify-between gap-6">
+    <div className="scallop-edge bg-ink text-paper-raised rounded-2xl px-7 py-6 flex flex-wrap items-end justify-between gap-6">
       <div>
-        <p className="text-xs uppercase tracking-widest text-paper-raised/60 mb-1">
+        <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1.5 font-medium">
           Saldo · {monthLabel}
         </p>
         <p
-          className={`tabular text-4xl sm:text-5xl font-semibold ${
-            positive ? "text-income" : "text-expense"
-          }`}
-          style={{
-            color: positive ? "#8FBF9F" : "#E4998A",
-          }}
+          className="font-display italic text-5xl sm:text-6xl font-semibold leading-none"
+          style={{ color: positive ? "#A9C09A" : "#E3B29E" }}
         >
           {positive ? "+" : ""}
           {formatEuro(saldo)}
@@ -34,18 +30,18 @@ export default function BalanceStrip({
       </div>
       <div className="flex gap-8">
         <div>
-          <p className="text-xs uppercase tracking-widest text-paper-raised/60 mb-1">
+          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
             Entrate
           </p>
-          <p className="tabular text-lg font-medium" style={{ color: "#8FBF9F" }}>
+          <p className="tabular text-lg" style={{ color: "#A9C09A" }}>
             {formatEuro(entrate)}
           </p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-widest text-paper-raised/60 mb-1">
+          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
             Uscite
           </p>
-          <p className="tabular text-lg font-medium" style={{ color: "#E4998A" }}>
+          <p className="tabular text-lg" style={{ color: "#E3B29E" }}>
             {formatEuro(uscite)}
           </p>
         </div>

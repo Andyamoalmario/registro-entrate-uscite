@@ -1,23 +1,24 @@
 import type { Metadata } from "next";
-import { Roboto_Slab, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Cormorant_Garamond, Work_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const robotoSlab = Roboto_Slab({
+const cormorant = Cormorant_Garamond({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "700"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
-const inter = Inter({
+const workSans = Work_Sans({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
 
-const plexMono = IBM_Plex_Mono({
+const spaceMono = Space_Mono({
   variable: "--font-data",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="it"
-      className={`${robotoSlab.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${workSans.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

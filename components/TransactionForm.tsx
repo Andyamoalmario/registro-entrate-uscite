@@ -44,7 +44,7 @@ export default function TransactionForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-paper-raised border border-rule rounded-sm p-5 space-y-4"
+      className="bg-paper-raised border border-rule rounded-2xl p-5 space-y-4"
     >
       <div className="flex gap-2">
         <button
@@ -53,7 +53,7 @@ export default function TransactionForm({
             setKind("uscita");
             setCategory(DEFAULT_EXPENSE_CATEGORIES[0]);
           }}
-          className={`flex-1 py-2 text-sm font-medium rounded-sm border transition-colors ${
+          className={`flex-1 py-2 text-sm font-medium rounded-2xl border transition-colors ${
             kind === "uscita"
               ? "bg-expense text-paper-raised border-expense"
               : "border-rule text-ink-soft hover:border-expense"
@@ -67,7 +67,7 @@ export default function TransactionForm({
             setKind("entrata");
             setCategory(DEFAULT_INCOME_CATEGORIES[0]);
           }}
-          className={`flex-1 py-2 text-sm font-medium rounded-sm border transition-colors ${
+          className={`flex-1 py-2 text-sm font-medium rounded-2xl border transition-colors ${
             kind === "entrata"
               ? "bg-income text-paper-raised border-income"
               : "border-rule text-ink-soft hover:border-income"
@@ -87,7 +87,7 @@ export default function TransactionForm({
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0,00"
             required
-            className="tabular mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+            className="tabular mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
           />
         </label>
         <label className="block">
@@ -97,7 +97,7 @@ export default function TransactionForm({
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="tabular mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+            className="tabular mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
           />
         </label>
       </div>
@@ -107,7 +107,7 @@ export default function TransactionForm({
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+          className="mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
         >
           {categories.map((c) => (
             <option key={c} value={c}>
@@ -124,13 +124,13 @@ export default function TransactionForm({
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder="es. cena con amici"
-          className="mt-1 w-full border border-rule rounded-sm px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+          className="mt-1 w-full border border-rule rounded-2xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
         />
       </label>
 
       <button
         type="submit"
-        className="w-full py-2.5 bg-ink text-paper-raised text-sm font-medium rounded-sm hover:bg-ink/90 transition-colors"
+        className="w-full py-2.5 bg-ink text-paper-raised text-sm font-medium rounded-2xl hover:bg-ink/90 transition-colors"
       >
         Aggiungi movimento
       </button>

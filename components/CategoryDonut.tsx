@@ -4,13 +4,13 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { formatEuro } from "@/lib/format";
 
 const PALETTE = [
-  "#A6432E",
-  "#B08D2B",
-  "#4A5568",
-  "#7A8B99",
-  "#C9663F",
-  "#8A7B3D",
-  "#5E4B3C",
+  "#B5715F",
+  "#B8944A",
+  "#7C6B79",
+  "#9C8AA5",
+  "#C08F72",
+  "#8A9B7E",
+  "#A57C89",
 ];
 
 export default function CategoryDonut({
@@ -20,7 +20,7 @@ export default function CategoryDonut({
 }) {
   if (data.length === 0) {
     return (
-      <div className="bg-paper-raised border border-rule rounded-sm p-5">
+      <div className="bg-paper-raised border border-rule rounded-2xl p-5">
         <p className="text-xs uppercase tracking-widest text-ink-soft mb-4">
           Uscite per categoria
         </p>
@@ -32,7 +32,7 @@ export default function CategoryDonut({
   }
 
   return (
-    <div className="bg-paper-raised border border-rule rounded-sm p-5">
+    <div className="bg-paper-raised border border-rule rounded-2xl p-5">
       <p className="text-xs uppercase tracking-widest text-ink-soft mb-4">
         Uscite per categoria
       </p>
@@ -54,9 +54,9 @@ export default function CategoryDonut({
             <Tooltip
               formatter={(value) => formatEuro(Number(value))}
               contentStyle={{
-                background: "#F6F3E9",
-                border: "1px solid #C9C2AC",
-                borderRadius: 2,
+                background: "#FFFBF5",
+                border: "1px solid #E3D3CE",
+                borderRadius: 10,
                 fontSize: 13,
               }}
             />

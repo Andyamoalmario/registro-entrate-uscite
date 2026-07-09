@@ -13,14 +13,14 @@ export default function TransactionList({
 
   if (transactions.length === 0) {
     return (
-      <div className="border border-dashed border-rule rounded-sm p-8 text-center text-ink-soft text-sm">
+      <div className="border border-dashed border-rule rounded-2xl p-8 text-center text-ink-soft text-sm">
         Nessun movimento questo mese. Aggiungine uno dal modulo qui accanto.
       </div>
     );
   }
 
   return (
-    <div className="border border-rule rounded-sm overflow-hidden bg-paper-raised">
+    <div className="border border-rule rounded-2xl overflow-hidden bg-paper-raised">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-rule text-left text-xs uppercase tracking-wide text-ink-soft">
