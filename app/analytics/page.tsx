@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLedgerStore } from "@/lib/store";
+import YearlyOverview from "@/components/YearlyOverview";
 import {
   allTimeCategoryBreakdown,
   averageMonthlyExpense,
@@ -65,6 +66,8 @@ export default function AnalyticsPage() {
   return (
     <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
       <h1 className="font-display italic text-3xl text-ink">Analytics</h1>
+
+      <YearlyOverview transactions={transactions} />
 
       <div className="grid md:grid-cols-3 gap-4">
         <Card label={`Uscite: ${comparison.currentLabel} vs ${comparison.previousLabel}`}>

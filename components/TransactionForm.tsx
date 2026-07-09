@@ -12,9 +12,11 @@ import { suggestedCategories, todayISO } from "@/lib/format";
 
 export default function TransactionForm({
   editing,
+  defaultDate,
   onDone,
 }: {
   editing?: Transaction | null;
+  defaultDate?: string;
   onDone?: () => void;
 }) {
   const addTransaction = useLedgerStore((s) => s.addTransaction);
@@ -24,7 +26,7 @@ export default function TransactionForm({
   const [kind, setKind] = useState<TransactionKind>(editing?.kind ?? "uscita");
   const [amount, setAmount] = useState(editing ? String(editing.amount) : "");
   const [category, setCategory] = useState(editing?.category ?? "");
-  const [date, setDate] = useState(editing?.date ?? todayISO());
+  const [date, setDate] = useState(editing?.date ?? defaultDate ?? todayISO());
   const [note, setNote] = useState(editing?.note ?? "");
 
   const categoryOptions = suggestedCategories(
@@ -57,7 +59,7 @@ export default function TransactionForm({
       setAmount("");
       setCategory("");
       setNote("");
-      setDate(todayISO());
+      setDate(defaultDate ?? todayISO());
     }
     onDone?.();
   }

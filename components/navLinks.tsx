@@ -10,6 +10,16 @@ export const navLinks = [
     ),
   },
   {
+    href: "/calendario",
+    label: "Calendario",
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <rect x="4" y="5.5" width="16" height="14.5" rx="1.8" />
+        <path d="M4 9.5h16M8 3.5v3M16 3.5v3" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
     href: "/analytics",
     label: "Analytics",
     icon: (

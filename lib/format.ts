@@ -258,3 +258,91 @@ export function investmentTypeBreakdown(
     }))
     .sort((a, b) => b.total - a.total);
 }
+
+export interface YearMonthSummary {
+  key: string;
+  monthIndex: number;
+  label: string;
+  entrate: number;
+  uscite: number;
+  saldo: number;
+}
+
+export function yearlyOverview(
+  transactions: Transaction[],
+  year: number
+): YearMonthSummary[] {
+  return Array.from({ length: 12 }, (_, i) => {
+    const key = `${year}-${String(i + 1).padStart(2, "0")}`;
+    const totals = monthTotals(transactionsForMonth(transactions, key));
+    return {
+      key,
+      monthIndex: i,
+      label: MONTH_NAMES_IT[i].slice(0, 3),
+      entrate: totals.entrate,
+      uscite: totals.uscite,
+      saldo: totals.saldo,
+    };
+  });
+}
+
+export function transactionsForDay(
+  transactions: Transaction[],
+  dateISO: string
+): Transaction[] {
+  return transactions
+    .filter((t) => t.date === dateISO)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function dailyTotals(
+  transactions: Transaction[],
+  monthKey: string
+): Map<string, { entrate: number; uscite: number; saldo: number }> {
+  const map = new Map<string, { entrate: number; uscite: number; saldo: number }>();
+  transactionsForMonth(transactions, monthKey).forEach((t) => {
+    const cur = map.get(t.date) ?? { entrate: 0, uscite: 0, saldo: 0 };
+    if (t.kind === "entrata") cur.entrate += t.amount;
+    else cur.uscite += t.amount;
+    cur.saldo = cur.entrate - cur.uscite;
+    map.set(t.date, cur);
+  });
+  return map;
+}
+
+// Monday-first calendar grid for a given month, including padding cells
+// from the previous/next month so the grid always has full weeks.
+export function calendarGrid(year: number, monthIndex: number): { date: string; inMonth: boolean; day: number }[] {
+  const first = new Date(year, monthIndex, 1);
+  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+  // JS getDay(): 0=Sun..6=Sat. Convert to Monday-first: 0=Mon..6=Sun.
+  const firstWeekday = (first.getDay() + 6) % 7;
+
+  const cells: { date: string; inMonth: boolean; day: number }[] = [];
+
+  const prevMonthDays = new Date(year, monthIndex, 0).getDate();
+  for (let i = firstWeekday - 1; i >= 0; i--) {
+    const day = prevMonthDays - i;
+    const d = new Date(year, monthIndex - 1, day);
+    cells.push({ date: isoDate(d), inMonth: false, day });
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(year, monthIndex, day);
+    cells.push({ date: isoDate(d), inMonth: true, day });
+  }
+
+  while (cells.length % 7 !== 0) {
+    const nextDay = cells.length - (firstWeekday + daysInMonth) + 1;
+    const d = new Date(year, monthIndex + 1, nextDay);
+    cells.push({ date: isoDate(d), inMonth: false, day: nextDay });
+  }
+
+  return cells;
+}
+
+function isoDate(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
+}
