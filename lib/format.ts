@@ -1,4 +1,4 @@
-import { Transaction } from "./types";
+import { Transaction, Investment } from "./types";
 
 export function formatEuro(value: number): string {
   return new Intl.NumberFormat("it-IT", {
@@ -180,6 +180,36 @@ export function largestExpense(transactions: Transaction[]): Transaction | null 
   return expenses.reduce((max, t) => (t.amount > max.amount ? t : max), expenses[0]);
 }
 
+export function savingsRateForMonth(transactions: Transaction[], key: string): number | null {
+  const totals = monthTotals(transactionsForMonth(transactions, key));
+  if (totals.entrate <= 0) return null;
+  return (totals.saldo / totals.entrate) * 100;
+}
+
+export function averageSavingsRate(transactions: Transaction[], n = 3): number | null {
+  const now = new Date();
+  const rates: number[] = [];
+  for (let i = 0; i < n; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const rate = savingsRateForMonth(transactions, key);
+    if (rate !== null) rates.push(rate);
+  }
+  if (rates.length === 0) return null;
+  return rates.reduce((a, b) => a + b, 0) / rates.length;
+}
+
+export function accumulatedNet(transactions: Transaction[]): number {
+  const totals = monthTotals(transactions);
+  return totals.saldo;
+}
+
+export function emergencyFundMonths(transactions: Transaction[]): number | null {
+  const avgExpense = averageMonthlyExpense(transactions, 6);
+  if (avgExpense <= 0) return null;
+  return accumulatedNet(transactions) / avgExpense;
+}
+
 export function allTimeCategoryBreakdown(
   transactions: Transaction[],
   kind: "entrata" | "uscita",
@@ -210,4 +240,21 @@ export function lastNMonthsData(
     });
   }
   return result;
+}
+
+export function investmentTypeBreakdown(
+  investments: Investment[]
+): { type: string; total: number; pct: number }[] {
+  const total = investments.reduce((sum, i) => sum + i.currentValue, 0);
+  const map = new Map<string, number>();
+  investments.forEach((i) => {
+    map.set(i.type, (map.get(i.type) ?? 0) + i.currentValue);
+  });
+  return Array.from(map.entries())
+    .map(([type, value]) => ({
+      type,
+      total: value,
+      pct: total > 0 ? (value / total) * 100 : 0,
+    }))
+    .sort((a, b) => b.total - a.total);
 }

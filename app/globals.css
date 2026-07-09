@@ -17,7 +17,6 @@
 
   --font-display: "Cormorant Garamond", serif;
   --font-body: "Work Sans", sans-serif;
-  --font-data: "Space Mono", monospace;
 }
 
 @theme inline {
@@ -35,7 +34,6 @@
   --color-invest-soft: var(--invest-soft);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
-  --font-data: var(--font-data);
 }
 
 body {
@@ -45,8 +43,9 @@ body {
 }
 
 .tabular {
-  font-family: var(--font-data);
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
+  font-weight: 500;
 }
 
 /* Delicate scalloped edge — replaces the old ledger "torn paper" look */

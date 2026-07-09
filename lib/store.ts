@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Transaction, Investment } from "./types";
+import { Transaction, Investment, Debt } from "./types";
 
 function makeId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -9,12 +9,16 @@ function makeId(): string {
 interface LedgerState {
   transactions: Transaction[];
   investments: Investment[];
+  debts: Debt[];
   addTransaction: (t: Omit<Transaction, "id">) => void;
   removeTransaction: (id: string) => void;
   updateTransaction: (id: string, t: Partial<Transaction>) => void;
   addInvestment: (i: Omit<Investment, "id">) => void;
   removeInvestment: (id: string) => void;
   updateInvestment: (id: string, i: Partial<Investment>) => void;
+  addDebt: (d: Omit<Debt, "id">) => void;
+  removeDebt: (id: string) => void;
+  updateDebt: (id: string, d: Partial<Debt>) => void;
 }
 
 export const useLedgerStore = create<LedgerState>()(
@@ -22,6 +26,7 @@ export const useLedgerStore = create<LedgerState>()(
     (set) => ({
       transactions: [],
       investments: [],
+      debts: [],
       addTransaction: (t) =>
         set((state) => ({
           transactions: [...state.transactions, { ...t, id: makeId() }],
@@ -49,6 +54,18 @@ export const useLedgerStore = create<LedgerState>()(
           investments: state.investments.map((i) =>
             i.id === id ? { ...i, ...patch } : i
           ),
+        })),
+      addDebt: (d) =>
+        set((state) => ({
+          debts: [...state.debts, { ...d, id: makeId() }],
+        })),
+      removeDebt: (id) =>
+        set((state) => ({
+          debts: state.debts.filter((d) => d.id !== id),
+        })),
+      updateDebt: (id, patch) =>
+        set((state) => ({
+          debts: state.debts.map((d) => (d.id === id ? { ...d, ...patch } : d)),
         })),
     }),
     {

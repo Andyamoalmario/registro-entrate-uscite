@@ -18,6 +18,15 @@ export interface Investment {
   updatedAt: string; // ISO date of last manual update
 }
 
+export interface Debt {
+  id: string;
+  person: string;
+  amount: number;
+  note?: string;
+  date: string; // ISO date when the debt was recorded
+  paid: boolean;
+}
+
 export const DEFAULT_EXPENSE_CATEGORIES = [
   "Casa",
   "Spesa",
