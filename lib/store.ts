@@ -58,6 +58,8 @@ interface LedgerState {
   debts: DebtEntry[];
   theme: string;
   dashboardWidgets: string[];
+  widgetSizes: Record<string, "half" | "full">;
+  ownerName: string;
   householdExpenses: HouseholdExpense[];
   householdSalaries: HouseholdSalaries;
   addTransaction: (t: Omit<Transaction, "id">) => void;
@@ -72,6 +74,8 @@ interface LedgerState {
   setTheme: (id: string) => void;
   toggleDashboardWidget: (id: string) => void;
   reorderDashboardWidget: (id: string, direction: "up" | "down") => void;
+  setWidgetSize: (id: string, size: "half" | "full") => void;
+  setOwnerName: (name: string) => void;
   addHouseholdExpense: (e: Omit<HouseholdExpense, "id">) => void;
   removeHouseholdExpense: (id: string) => void;
   updateHouseholdExpense: (id: string, e: Partial<HouseholdExpense>) => void;
@@ -91,11 +95,13 @@ export const useLedgerStore = create<LedgerState>()(
         "categorie-uscite",
         "panoramica-annuale",
       ],
+      widgetSizes: {},
+      ownerName: "",
       householdExpenses: [],
       householdSalaries: {
-        person1Name: "Persona 1",
+        person1Name: "",
         person1Salary: 0,
-        person2Name: "Persona 2",
+        person2Name: "",
         person2Salary: 0,
       },
       addTransaction: (t) =>
@@ -155,6 +161,11 @@ export const useLedgerStore = create<LedgerState>()(
           [list[index], list[swapWith]] = [list[swapWith], list[index]];
           return { dashboardWidgets: list };
         }),
+      setWidgetSize: (id, size) =>
+        set((state) => ({
+          widgetSizes: { ...state.widgetSizes, [id]: size },
+        })),
+      setOwnerName: (name) => set({ ownerName: name }),
       addHouseholdExpense: (e) =>
         set((state) => ({
           householdExpenses: [...state.householdExpenses, { ...e, id: makeId() }],

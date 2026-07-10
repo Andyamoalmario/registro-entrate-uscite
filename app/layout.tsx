@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 import MobileHeader from "@/components/MobileHeader";
 import ThemeApplier from "@/components/ThemeApplier";
+import OnboardingGate from "@/components/OnboardingGate";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -40,6 +41,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex">
         <ThemeApplier />
+        <OnboardingGate />
         <Sidebar />
         <div className="flex-1 min-h-screen pb-16 md:pb-0">
           <MobileHeader />

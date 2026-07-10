@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navLinks } from "./navLinks";
 import ThemeSwitcher from "./ThemeSwitcher";
+import { useLedgerStore } from "@/lib/store";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const ownerName = useLedgerStore((s) => s.ownerName);
 
   return (
     <aside className="hidden md:flex w-60 shrink-0 border-r border-rule bg-paper-raised min-h-screen flex-col">
@@ -15,7 +17,7 @@ export default function Sidebar() {
           Saldo
         </span>
         <p className="text-xs text-ink-soft tracking-wide mt-1">
-          entrate · uscite · investimenti
+          {ownerName ? `di ${ownerName}` : "entrate · uscite · investimenti"}
         </p>
       </div>
       <nav className="flex flex-col gap-1 px-3">

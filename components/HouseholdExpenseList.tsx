@@ -23,7 +23,9 @@ export default function HouseholdExpenseList({
   }
 
   const nameFor = (e: HouseholdExpense) =>
-    (e.paidBy ?? "person1") === "person1" ? salaries.person1Name : salaries.person2Name;
+    (e.paidBy ?? "person1") === "person1"
+      ? salaries.person1Name || "Tu"
+      : salaries.person2Name;
 
   return (
     <div className="border border-rule rounded-2xl overflow-hidden bg-paper-raised overflow-x-auto">

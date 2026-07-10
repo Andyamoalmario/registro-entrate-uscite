@@ -80,30 +80,37 @@ export default function HouseholdExpenseForm({
 
       <div>
         <span className="text-xs text-ink-soft">Pagato da</span>
-        <div className="flex gap-2 mt-1">
-          <button
-            type="button"
-            onClick={() => setPaidBy("person1")}
-            className={`flex-1 py-2 text-sm font-medium rounded-xl border transition-colors ${
-              paidBy === "person1"
-                ? "bg-ink text-paper-raised border-ink"
-                : "border-rule text-ink-soft hover:border-ink"
-            }`}
-          >
-            {salaries.person1Name}
-          </button>
-          <button
-            type="button"
-            onClick={() => setPaidBy("person2")}
-            className={`flex-1 py-2 text-sm font-medium rounded-xl border transition-colors ${
-              paidBy === "person2"
-                ? "bg-ink text-paper-raised border-ink"
-                : "border-rule text-ink-soft hover:border-ink"
-            }`}
-          >
-            {salaries.person2Name}
-          </button>
-        </div>
+        {salaries.person2Name ? (
+          <div className="flex gap-2 mt-1">
+            <button
+              type="button"
+              onClick={() => setPaidBy("person1")}
+              className={`flex-1 py-2 text-sm font-medium rounded-xl border transition-colors ${
+                paidBy === "person1"
+                  ? "bg-ink text-paper-raised border-ink"
+                  : "border-rule text-ink-soft hover:border-ink"
+              }`}
+            >
+              {salaries.person1Name || "Tu"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setPaidBy("person2")}
+              className={`flex-1 py-2 text-sm font-medium rounded-xl border transition-colors ${
+                paidBy === "person2"
+                  ? "bg-ink text-paper-raised border-ink"
+                  : "border-rule text-ink-soft hover:border-ink"
+              }`}
+            >
+              {salaries.person2Name}
+            </button>
+          </div>
+        ) : (
+          <p className="text-sm text-ink-soft mt-1">
+            {salaries.person1Name || "Tu"} (aggiungi un partner in &ldquo;Stipendi
+            mensili&rdquo; per dividere le spese)
+          </p>
+        )}
       </div>
 
       <label className="block">

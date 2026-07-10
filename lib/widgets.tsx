@@ -153,37 +153,48 @@ function ConsigliWidget() {
 export interface WidgetDef {
   id: string;
   label: string;
+  defaultSize: "half" | "full";
   render: () => ReactNode;
 }
 
 export const WIDGETS: WidgetDef[] = [
-  { id: "saldo-mese", label: "Saldo del mese", render: () => <SaldoMeseWidget /> },
+  { id: "saldo-mese", label: "Saldo del mese", defaultSize: "full", render: () => <SaldoMeseWidget /> },
   {
     id: "grafico-mensile",
     label: "Grafico entrate/uscite",
+    defaultSize: "half",
     render: () => <GraficoMensileWidget />,
   },
   {
     id: "categorie-uscite",
     label: "Uscite per categoria",
+    defaultSize: "half",
     render: () => <CategorieUsciteWidget />,
   },
   {
     id: "panoramica-annuale",
     label: "Panoramica annuale",
+    defaultSize: "full",
     render: () => <PanoramicaAnnualeWidget />,
   },
   {
     id: "top-categorie",
     label: "Top categorie di spesa",
+    defaultSize: "half",
     render: () => <TopCategorieWidget />,
   },
   {
     id: "portafoglio",
     label: "Portafoglio investimenti",
+    defaultSize: "full",
     render: () => <PortafoglioWidget />,
   },
-  { id: "debiti", label: "Debiti e crediti", render: () => <DebitiWidget /> },
-  { id: "fondo-casa", label: "Fondo casa", render: () => <FondoCasaWidget /> },
-  { id: "consigli", label: "Consigli dell'analista", render: () => <ConsigliWidget /> },
+  { id: "debiti", label: "Debiti e crediti", defaultSize: "full", render: () => <DebitiWidget /> },
+  { id: "fondo-casa", label: "Fondo casa", defaultSize: "half", render: () => <FondoCasaWidget /> },
+  {
+    id: "consigli",
+    label: "Consigli dell'analista",
+    defaultSize: "half",
+    render: () => <ConsigliWidget />,
+  },
 ];
