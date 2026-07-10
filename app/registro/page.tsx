@@ -7,6 +7,7 @@ import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
 import MonthlyBarChart from "@/components/MonthlyBarChart";
 import CategoryDonut from "@/components/CategoryDonut";
+import ImportFromFondoCasa from "@/components/ImportFromFondoCasa";
 import { useLedgerStore } from "@/lib/store";
 import { Transaction } from "@/lib/types";
 import {
@@ -59,6 +60,8 @@ export default function Home() {
         <MonthlyBarChart data={chartData} />
         <CategoryDonut data={expenseBreakdown} />
       </div>
+
+      <ImportFromFondoCasa />
 
       <div className="grid md:grid-cols-[1fr_320px] gap-6 items-start">
         <TransactionList transactions={monthTx} onEdit={setEditing} />

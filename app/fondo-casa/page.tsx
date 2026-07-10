@@ -7,6 +7,7 @@ import HouseholdSalaries from "@/components/HouseholdSalaries";
 import HouseholdExpenseList from "@/components/HouseholdExpenseList";
 import HouseholdExpenseForm from "@/components/HouseholdExpenseForm";
 import HouseholdAnalyst from "@/components/HouseholdAnalyst";
+import ImportFromRegistro from "@/components/ImportFromRegistro";
 import { formatEuro } from "@/lib/format";
 
 export default function FondoCasaPage() {
@@ -47,6 +48,8 @@ export default function FondoCasaPage() {
       <HouseholdSalaries />
 
       <HouseholdAnalyst salaries={householdSalaries} totalExpenses={total} />
+
+      <ImportFromRegistro />
 
       <div className="grid md:grid-cols-[1fr_320px] gap-6 items-start">
         <HouseholdExpenseList expenses={householdExpenses} onEdit={setEditing} />
