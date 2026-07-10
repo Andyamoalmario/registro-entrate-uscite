@@ -16,6 +16,7 @@ import {
   currentMonthKey,
   debtTotals,
   formatEuro,
+  householdExpensesForMonth,
   householdSettlement,
   lastNMonthsData,
   monthLabel,
@@ -106,15 +107,16 @@ function DebitiWidget() {
 function FondoCasaWidget() {
   const expenses = useLedgerStore((s) => s.householdExpenses);
   const salaries = useLedgerStore((s) => s.householdSalaries);
-  const { total, split, balance } = householdSettlement(expenses, salaries);
+  const monthExpenses = householdExpensesForMonth(expenses, currentMonthKey());
+  const { total, split, balance } = householdSettlement(monthExpenses, salaries);
   const settled = Math.abs(balance) < 0.5;
   return (
     <div className="bg-paper-raised border border-rule rounded-2xl p-5">
       <p className="text-xs uppercase tracking-[0.15em] text-ink-soft mb-3">
-        Fondo casa
+        Fondo casa · questo mese
       </p>
       <p className="tabular text-2xl text-ink font-medium">{formatEuro(total)}</p>
-      <p className="text-xs text-ink-soft mt-0.5">spese fisse al mese</p>
+      <p className="text-xs text-ink-soft mt-0.5">spese di casa questo mese</p>
       {split && (
         <>
           <p className="text-xs text-ink-soft mt-3">

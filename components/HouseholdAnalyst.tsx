@@ -11,10 +11,8 @@ export default function HouseholdAnalyst({
   salaries: HouseholdSalaries;
   expenses: HouseholdExpense[];
 }) {
-  const { total, split, paid1, paid2, balance } = householdSettlement(
-    expenses,
-    salaries
-  );
+  const { total, split, paid1, paid2, paid1Pct, paid2Pct, balance } =
+    householdSettlement(expenses, salaries);
 
   if (!split) {
     return (
@@ -38,7 +36,7 @@ export default function HouseholdAnalyst({
         Analista fondo casa
       </p>
       <p className="text-sm text-ink-soft mb-4">
-        Per coprire {formatEuro(total)} di spese fisse al mese, versate entrambi lo
+        Per coprire {formatEuro(total)} di spese questo mese, versate entrambi lo
         stesso{" "}
         <span className="tabular font-semibold text-ink">
           {split.sharedPct.toFixed(1)}%
@@ -53,12 +51,14 @@ export default function HouseholdAnalyst({
             {formatEuro(split.amount1)}
           </p>
           <p className="text-xs text-ink-soft mt-1">
-            {split.sharedPct.toFixed(1)}% di {formatEuro(salaries.person1Salary)}
+            quota target — {split.sharedPct.toFixed(1)}% di{" "}
+            {formatEuro(salaries.person1Salary)}
           </p>
-          <p className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
+          <div className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
             Ha pagato finora:{" "}
-            <span className="tabular font-medium">{formatEuro(paid1)}</span>
-          </p>
+            <span className="tabular font-medium text-ink">{formatEuro(paid1)}</span>
+            <span className="tabular"> ({paid1Pct.toFixed(0)}% della spesa reale)</span>
+          </div>
         </div>
         <div className="rounded-xl p-4" style={{ background: "var(--invest-soft)" }}>
           <p className="text-sm font-medium text-ink">{salaries.person2Name}</p>
@@ -66,12 +66,14 @@ export default function HouseholdAnalyst({
             {formatEuro(split.amount2)}
           </p>
           <p className="text-xs text-ink-soft mt-1">
-            {split.sharedPct.toFixed(1)}% di {formatEuro(salaries.person2Salary)}
+            quota target — {split.sharedPct.toFixed(1)}% di{" "}
+            {formatEuro(salaries.person2Salary)}
           </p>
-          <p className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
+          <div className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
             Ha pagato finora:{" "}
-            <span className="tabular font-medium">{formatEuro(paid2)}</span>
-          </p>
+            <span className="tabular font-medium text-ink">{formatEuro(paid2)}</span>
+            <span className="tabular"> ({paid2Pct.toFixed(0)}% della spesa reale)</span>
+          </div>
         </div>
       </div>
 

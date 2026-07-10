@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useLedgerStore } from "@/lib/store";
 import { HouseholdExpense } from "@/lib/types";
+import { todayISO } from "@/lib/format";
 
 export default function HouseholdExpenseForm({
   editing,
+  defaultDate,
   onDone,
 }: {
   editing?: HouseholdExpense | null;
+  defaultDate?: string;
   onDone?: () => void;
 }) {
   const addHouseholdExpense = useLedgerStore((s) => s.addHouseholdExpense);
@@ -18,6 +21,7 @@ export default function HouseholdExpenseForm({
   const [name, setName] = useState(editing?.name ?? "");
   const [amount, setAmount] = useState(editing ? String(editing.amount) : "");
   const [note, setNote] = useState(editing?.note ?? "");
+  const [date, setDate] = useState(editing?.date ?? defaultDate ?? todayISO());
   const [paidBy, setPaidBy] = useState<"person1" | "person2">(
     editing?.paidBy ?? "person1"
   );
@@ -25,7 +29,7 @@ export default function HouseholdExpenseForm({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const parsed = parseFloat(amount.replace(",", "."));
-    if (!name.trim() || !parsed || parsed <= 0) return;
+    if (!name.trim() || !parsed || parsed <= 0 || !date) return;
 
     if (editing) {
       updateHouseholdExpense(editing.id, {
@@ -33,6 +37,7 @@ export default function HouseholdExpenseForm({
         amount: parsed,
         note: note.trim() || undefined,
         paidBy,
+        date,
       });
     } else {
       addHouseholdExpense({
@@ -40,10 +45,12 @@ export default function HouseholdExpenseForm({
         amount: parsed,
         note: note.trim() || undefined,
         paidBy,
+        date,
       });
       setName("");
       setAmount("");
       setNote("");
+      setDate(defaultDate ?? todayISO());
     }
     onDone?.();
   }
@@ -113,18 +120,30 @@ export default function HouseholdExpenseForm({
         )}
       </div>
 
-      <label className="block">
-        <span className="text-xs text-ink-soft">Importo mensile (€)</span>
-        <input
-          type="text"
-          inputMode="decimal"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="0,00"
-          required
-          className="tabular mt-1 w-full border border-rule rounded-xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
-        />
-      </label>
+      <div className="grid grid-cols-2 gap-3">
+        <label className="block">
+          <span className="text-xs text-ink-soft">Importo (€)</span>
+          <input
+            type="text"
+            inputMode="decimal"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="0,00"
+            required
+            className="tabular mt-1 w-full border border-rule rounded-xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+          />
+        </label>
+        <label className="block">
+          <span className="text-xs text-ink-soft">Data</span>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="tabular mt-1 w-full border border-rule rounded-xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
+          />
+        </label>
+      </div>
 
       <label className="block">
         <span className="text-xs text-ink-soft">Nota (opzionale)</span>
@@ -141,7 +160,7 @@ export default function HouseholdExpenseForm({
         type="submit"
         className="w-full py-2.5 bg-ink text-paper-raised text-sm font-medium rounded-xl hover:bg-ink/90 transition-colors"
       >
-        {editing ? "Salva modifiche" : "Aggiungi spesa fissa"}
+        {editing ? "Salva modifiche" : "Aggiungi spesa"}
       </button>
     </form>
   );

@@ -421,7 +421,24 @@ export interface HouseholdSettlement {
   split: HouseholdSplit | null;
   paid1: number;
   paid2: number;
+  paid1Pct: number;
+  paid2Pct: number;
   balance: number; // >0: person1 has overpaid, person2 owes them `balance`. <0: opposite.
+}
+
+export function householdExpensesForMonth(
+  expenses: HouseholdExpense[],
+  key: string
+): HouseholdExpense[] {
+  return expenses
+    .filter((e) => (e.date ? monthKey(e.date) : currentMonthKey()) === key)
+    .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+}
+
+export function allHouseholdMonthKeys(expenses: HouseholdExpense[]): string[] {
+  const keys = new Set(expenses.map((e) => (e.date ? monthKey(e.date) : currentMonthKey())));
+  keys.add(currentMonthKey());
+  return Array.from(keys).sort().reverse();
 }
 
 export function householdSettlement(
@@ -436,6 +453,8 @@ export function householdSettlement(
   const paid2 = expenses
     .filter((e) => e.paidBy === "person2")
     .reduce((sum, e) => sum + e.amount, 0);
+  const paid1Pct = total > 0 ? (paid1 / total) * 100 : 0;
+  const paid2Pct = total > 0 ? (paid2 / total) * 100 : 0;
   const balance = split ? paid1 - split.amount1 : 0;
-  return { total, split, paid1, paid2, balance };
+  return { total, split, paid1, paid2, paid1Pct, paid2Pct, balance };
 }

@@ -22,10 +22,8 @@ export default function ImportFromRegistro() {
       name: t.category,
       amount: t.amount,
       paidBy: "person1",
-      note: `Importato dal Registro${t.note ? " — " + t.note : ""} (${t.date.slice(
-        8,
-        10
-      )}/${t.date.slice(5, 7)}/${t.date.slice(0, 4)})`,
+      date: t.date,
+      note: t.note ? `Importato dal Registro — ${t.note}` : "Importato dal Registro",
     });
     setSelectedId("");
   }
