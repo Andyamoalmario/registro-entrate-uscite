@@ -11,10 +11,13 @@
   --accent-soft: #E1F0F7;  /* tinta azzurro chiaro per stati attivi */
   --income: #5FA97F;       /* pastel green, deep enough for contrast */
   --income-soft: #DFF3E7;
+  --income-bright: #8FD1AC; /* used on dark hero backgrounds */
   --expense: #D9789A;      /* pastel rose */
   --expense-soft: #FBE3E9;
+  --expense-bright: #F0A8C0;
   --invest: #D1A63C;       /* pastel yellow/gold */
   --invest-soft: #FBF0D2;
+  --invest-bright: #F5DD8A;
 
   --font-display: "Cormorant Garamond", serif;
   --font-body: "Work Sans", sans-serif;

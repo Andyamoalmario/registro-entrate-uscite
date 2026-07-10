@@ -21,7 +21,7 @@ export default function PortfolioSummary({
         </p>
         <p
           className="font-display italic text-3xl sm:text-5xl md:text-6xl font-semibold leading-none"
-          style={{ color: "#F5DD8A" }}
+          style={{ color: "var(--invest-bright)" }}
         >
           {formatEuro(current)}
         </p>
@@ -41,7 +41,7 @@ export default function PortfolioSummary({
           </p>
           <p
             className="tabular text-lg"
-            style={{ color: positive ? "#8FD1AC" : "#F0A8C0" }}
+            style={{ color: positive ? "var(--income-bright)" : "var(--expense-bright)" }}
           >
             {positive ? "+" : ""}
             {formatEuro(gain)} ({positive ? "+" : ""}

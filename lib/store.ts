@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Transaction, Investment, DebtEntry } from "./types";
+import { Transaction, Investment, DebtEntry, HouseholdExpense, HouseholdSalaries } from "./types";
 
 function makeId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -56,6 +56,10 @@ interface LedgerState {
   transactions: Transaction[];
   investments: Investment[];
   debts: DebtEntry[];
+  theme: string;
+  dashboardWidgets: string[];
+  householdExpenses: HouseholdExpense[];
+  householdSalaries: HouseholdSalaries;
   addTransaction: (t: Omit<Transaction, "id">) => void;
   removeTransaction: (id: string) => void;
   updateTransaction: (id: string, t: Partial<Transaction>) => void;
@@ -65,6 +69,13 @@ interface LedgerState {
   addDebt: (d: Omit<DebtEntry, "id">) => void;
   removeDebt: (id: string) => void;
   updateDebt: (id: string, d: Partial<DebtEntry>) => void;
+  setTheme: (id: string) => void;
+  toggleDashboardWidget: (id: string) => void;
+  reorderDashboardWidget: (id: string, direction: "up" | "down") => void;
+  addHouseholdExpense: (e: Omit<HouseholdExpense, "id">) => void;
+  removeHouseholdExpense: (id: string) => void;
+  updateHouseholdExpense: (id: string, e: Partial<HouseholdExpense>) => void;
+  setHouseholdSalaries: (patch: Partial<HouseholdSalaries>) => void;
 }
 
 export const useLedgerStore = create<LedgerState>()(
@@ -73,6 +84,20 @@ export const useLedgerStore = create<LedgerState>()(
       transactions: [],
       investments: [],
       debts: [],
+      theme: "azzurro",
+      dashboardWidgets: [
+        "saldo-mese",
+        "grafico-mensile",
+        "categorie-uscite",
+        "panoramica-annuale",
+      ],
+      householdExpenses: [],
+      householdSalaries: {
+        person1Name: "Persona 1",
+        person1Salary: 0,
+        person2Name: "Persona 2",
+        person2Salary: 0,
+      },
       addTransaction: (t) =>
         set((state) => ({
           transactions: [...state.transactions, { ...t, id: makeId() }],
@@ -112,6 +137,41 @@ export const useLedgerStore = create<LedgerState>()(
       updateDebt: (id, patch) =>
         set((state) => ({
           debts: state.debts.map((d) => (d.id === id ? { ...d, ...patch } : d)),
+        })),
+      setTheme: (id) => set({ theme: id }),
+      toggleDashboardWidget: (id) =>
+        set((state) => ({
+          dashboardWidgets: state.dashboardWidgets.includes(id)
+            ? state.dashboardWidgets.filter((w) => w !== id)
+            : [...state.dashboardWidgets, id],
+        })),
+      reorderDashboardWidget: (id, direction) =>
+        set((state) => {
+          const list = [...state.dashboardWidgets];
+          const index = list.indexOf(id);
+          if (index === -1) return {};
+          const swapWith = direction === "up" ? index - 1 : index + 1;
+          if (swapWith < 0 || swapWith >= list.length) return {};
+          [list[index], list[swapWith]] = [list[swapWith], list[index]];
+          return { dashboardWidgets: list };
+        }),
+      addHouseholdExpense: (e) =>
+        set((state) => ({
+          householdExpenses: [...state.householdExpenses, { ...e, id: makeId() }],
+        })),
+      removeHouseholdExpense: (id) =>
+        set((state) => ({
+          householdExpenses: state.householdExpenses.filter((e) => e.id !== id),
+        })),
+      updateHouseholdExpense: (id, patch) =>
+        set((state) => ({
+          householdExpenses: state.householdExpenses.map((e) =>
+            e.id === id ? { ...e, ...patch } : e
+          ),
+        })),
+      setHouseholdSalaries: (patch) =>
+        set((state) => ({
+          householdSalaries: { ...state.householdSalaries, ...patch },
         })),
     }),
     {

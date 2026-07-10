@@ -1,29 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import MonthSelector from "@/components/MonthSelector";
-import BalanceStrip from "@/components/BalanceStrip";
-import TransactionForm from "@/components/TransactionForm";
-import TransactionList from "@/components/TransactionList";
-import MonthlyBarChart from "@/components/MonthlyBarChart";
-import CategoryDonut from "@/components/CategoryDonut";
 import { useLedgerStore } from "@/lib/store";
-import { Transaction } from "@/lib/types";
-import {
-  allMonthKeys,
-  categoryBreakdown,
-  currentMonthKey,
-  lastNMonthsData,
-  monthLabel,
-  monthTotals,
-  transactionsForMonth,
-} from "@/lib/format";
+import { WIDGETS } from "@/lib/widgets";
 
-export default function Home() {
+export default function DashboardPage() {
   const [mounted, setMounted] = useState(false);
-  const transactions = useLedgerStore((s) => s.transactions);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonthKey());
-  const [editing, setEditing] = useState<Transaction | null>(null);
+  const activeIds = useLedgerStore((s) => s.dashboardWidgets);
+  const toggleDashboardWidget = useLedgerStore((s) => s.toggleDashboardWidget);
+  const reorderDashboardWidget = useLedgerStore((s) => s.reorderDashboardWidget);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- required to avoid SSR/localStorage hydration mismatch
@@ -31,43 +17,101 @@ export default function Home() {
   }, []);
 
   if (!mounted) {
-    return <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8" />;
+    return <main className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8" />;
   }
 
-  const monthKeys = allMonthKeys(transactions);
-  const monthTx = transactionsForMonth(transactions, selectedMonth);
-  const totals = monthTotals(monthTx);
-  const chartData = lastNMonthsData(transactions, 6);
-  const expenseBreakdown = categoryBreakdown(monthTx, "uscita");
+  const active = activeIds
+    .map((id) => WIDGETS.find((w) => w.id === id))
+    .filter((w): w is (typeof WIDGETS)[number] => Boolean(w));
+  const inactive = WIDGETS.filter((w) => !activeIds.includes(w.id));
 
   return (
-    <main className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-      <MonthSelector
-        keys={monthKeys}
-        selected={selectedMonth}
-        onSelect={setSelectedMonth}
-      />
-
-      <BalanceStrip
-        entrate={totals.entrate}
-        uscite={totals.uscite}
-        saldo={totals.saldo}
-        monthLabel={monthLabel(selectedMonth)}
-      />
-
-      <div className="grid md:grid-cols-2 gap-4">
-        <MonthlyBarChart data={chartData} />
-        <CategoryDonut data={expenseBreakdown} />
+    <main className="max-w-3xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-display italic text-3xl text-ink">Dashboard</h1>
+          <p className="text-sm text-ink-soft mt-1">
+            La tua vista personale — scegli tu cosa vedere per primo.
+          </p>
+        </div>
+        <button
+          onClick={() => setEditing((e) => !e)}
+          className={`text-sm px-4 py-2 rounded-xl border transition-colors shrink-0 ${
+            editing
+              ? "bg-ink text-paper-raised border-ink"
+              : "border-rule text-ink-soft hover:border-ink hover:text-ink"
+          }`}
+        >
+          {editing ? "Fatto" : "Personalizza"}
+        </button>
       </div>
 
-      <div className="grid md:grid-cols-[1fr_320px] gap-6 items-start">
-        <TransactionList transactions={monthTx} onEdit={setEditing} />
-        <TransactionForm
-          key={editing?.id ?? "new"}
-          editing={editing}
-          onDone={() => setEditing(null)}
-        />
-      </div>
+      {editing && (
+        <div className="bg-paper-raised border border-dashed border-rule rounded-2xl p-4">
+          <p className="text-xs uppercase tracking-widest text-ink-soft mb-3">
+            Aggiungi un blocco
+          </p>
+          {inactive.length === 0 ? (
+            <p className="text-sm text-ink-soft">Li hai già aggiunti tutti.</p>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {inactive.map((w) => (
+                <button
+                  key={w.id}
+                  onClick={() => toggleDashboardWidget(w.id)}
+                  className="text-sm px-3 py-1.5 rounded-full border border-rule text-ink-soft hover:border-ink hover:text-ink transition-colors"
+                >
+                  + {w.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {active.length === 0 ? (
+        <div className="border border-dashed border-rule rounded-2xl p-8 text-center text-ink-soft text-sm">
+          Nessun blocco selezionato. Clicca &ldquo;Personalizza&rdquo; per aggiungerne.
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {active.map((w, i) => (
+            <div key={w.id}>
+              {editing && (
+                <div className="flex items-center justify-between mb-1.5 px-1">
+                  <span className="text-xs text-ink-soft">{w.label}</span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      disabled={i === 0}
+                      onClick={() => reorderDashboardWidget(w.id, "up")}
+                      aria-label="Sposta su"
+                      className="text-ink-soft hover:text-ink disabled:opacity-30 text-xs px-1.5"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      disabled={i === active.length - 1}
+                      onClick={() => reorderDashboardWidget(w.id, "down")}
+                      aria-label="Sposta giù"
+                      className="text-ink-soft hover:text-ink disabled:opacity-30 text-xs px-1.5"
+                    >
+                      ↓
+                    </button>
+                    <button
+                      onClick={() => toggleDashboardWidget(w.id)}
+                      aria-label="Rimuovi blocco"
+                      className="text-ink-soft hover:text-expense text-xs px-1.5"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              )}
+              {w.render()}
+            </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 }

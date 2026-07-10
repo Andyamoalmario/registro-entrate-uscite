@@ -1,4 +1,4 @@
-import { Transaction, Investment, DebtEntry, DEBT_TYPE_SIGN } from "./types";
+import { Transaction, Investment, DebtEntry, DEBT_TYPE_SIGN, HouseholdSalaries } from "./types";
 
 export function formatEuro(value: number): string {
   return new Intl.NumberFormat("it-IT", {
@@ -388,4 +388,27 @@ export function debtTotals(debts: DebtEntry[]): {
     .filter((b) => b.net > 0)
     .reduce((sum, b) => sum + b.net, 0);
   return { owedByMe, owedToMe };
+}
+
+export interface HouseholdSplit {
+  pct1: number;
+  pct2: number;
+  amount1: number;
+  amount2: number;
+}
+
+export function householdSplit(
+  salaries: HouseholdSalaries,
+  totalExpenses: number
+): HouseholdSplit | null {
+  const total = salaries.person1Salary + salaries.person2Salary;
+  if (total <= 0) return null;
+  const pct1 = (salaries.person1Salary / total) * 100;
+  const pct2 = (salaries.person2Salary / total) * 100;
+  return {
+    pct1,
+    pct2,
+    amount1: (totalExpenses * pct1) / 100,
+    amount2: (totalExpenses * pct2) / 100,
+  };
 }

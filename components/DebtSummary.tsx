@@ -17,7 +17,7 @@ export default function DebtSummary({
         </p>
         <p
           className="font-display italic text-3xl sm:text-5xl md:text-6xl font-semibold leading-none"
-          style={{ color: "#F0A8C0" }}
+          style={{ color: "var(--expense-bright)" }}
         >
           {formatEuro(owedByMe)}
         </p>
@@ -26,7 +26,7 @@ export default function DebtSummary({
         <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
           Ti devono in totale
         </p>
-        <p className="tabular text-lg" style={{ color: "#8FD1AC" }}>
+        <p className="tabular text-lg" style={{ color: "var(--income-bright)" }}>
           {formatEuro(owedToMe)}
         </p>
       </div>

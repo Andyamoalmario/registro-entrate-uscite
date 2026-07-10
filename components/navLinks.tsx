@@ -1,6 +1,18 @@
 export const navLinks = [
   {
     href: "/",
+    label: "Dashboard",
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.3" />
+        <rect x="13" y="3.5" width="7.5" height="4.5" rx="1.3" />
+        <rect x="13" y="10" width="7.5" height="10.5" rx="1.3" />
+        <rect x="3.5" y="13" width="7.5" height="7.5" rx="1.3" />
+      </svg>
+    ),
+  },
+  {
+    href: "/registro",
     label: "Registro",
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -44,6 +56,17 @@ export const navLinks = [
       <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.6">
         <path d="m4 16 5-6 4 3 7-8" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M15 5h5v5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    href: "/fondo-casa",
+    label: "Fondo casa",
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M4 11.5 12 4l8 7.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M6 10v9.5h12V10" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M10 19.5v-6h4v6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
   },

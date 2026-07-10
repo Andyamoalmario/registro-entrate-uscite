@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navLinks } from "./navLinks";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -36,6 +37,7 @@ export default function Sidebar() {
           );
         })}
       </nav>
+      <ThemeSwitcher />
     </aside>
   );
 }

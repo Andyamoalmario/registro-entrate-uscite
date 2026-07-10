@@ -44,6 +44,20 @@ export interface DebtEntry {
   date: string;
 }
 
+export interface HouseholdExpense {
+  id: string;
+  name: string;
+  amount: number;
+  note?: string;
+}
+
+export interface HouseholdSalaries {
+  person1Name: string;
+  person1Salary: number;
+  person2Name: string;
+  person2Salary: number;
+}
+
 export const DEFAULT_EXPENSE_CATEGORIES = [
   "Casa",
   "Spesa",
