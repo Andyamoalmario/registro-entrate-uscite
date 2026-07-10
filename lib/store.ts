@@ -2,6 +2,14 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Transaction, Investment, DebtEntry, HouseholdExpense, HouseholdSalaries } from "./types";
 
+export interface DashboardLayoutItem {
+  i: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 function makeId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
@@ -58,7 +66,7 @@ interface LedgerState {
   debts: DebtEntry[];
   theme: string;
   dashboardWidgets: string[];
-  widgetSizes: Record<string, "half" | "full">;
+  dashboardLayout: DashboardLayoutItem[];
   ownerName: string;
   householdExpenses: HouseholdExpense[];
   householdSalaries: HouseholdSalaries;
@@ -74,7 +82,7 @@ interface LedgerState {
   setTheme: (id: string) => void;
   toggleDashboardWidget: (id: string) => void;
   reorderDashboardWidget: (id: string, direction: "up" | "down") => void;
-  setWidgetSize: (id: string, size: "half" | "full") => void;
+  setDashboardLayout: (layout: DashboardLayoutItem[]) => void;
   setOwnerName: (name: string) => void;
   addHouseholdExpense: (e: Omit<HouseholdExpense, "id">) => void;
   removeHouseholdExpense: (id: string) => void;
@@ -95,7 +103,7 @@ export const useLedgerStore = create<LedgerState>()(
         "categorie-uscite",
         "panoramica-annuale",
       ],
-      widgetSizes: {},
+      dashboardLayout: [],
       ownerName: "",
       householdExpenses: [],
       householdSalaries: {
@@ -161,10 +169,7 @@ export const useLedgerStore = create<LedgerState>()(
           [list[index], list[swapWith]] = [list[swapWith], list[index]];
           return { dashboardWidgets: list };
         }),
-      setWidgetSize: (id, size) =>
-        set((state) => ({
-          widgetSizes: { ...state.widgetSizes, [id]: size },
-        })),
+      setDashboardLayout: (layout) => set({ dashboardLayout: layout }),
       setOwnerName: (name) => set({ ownerName: name }),
       addHouseholdExpense: (e) =>
         set((state) => ({
