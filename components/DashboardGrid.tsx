@@ -11,6 +11,26 @@ const ResponsiveGrid = WidthProvider(GridLayout);
 const COLS = 4;
 const ROW_HEIGHT = 64;
 
+// Simple left-to-right, top-to-bottom packer — avoids the gaps that come
+// from guessing x positions and relying on y:Infinity for several items at once.
+function packLayout(widgets: WidgetDef[]): DashboardLayoutItem[] {
+  let cursorX = 0;
+  let cursorY = 0;
+  let rowMaxH = 0;
+  const result: DashboardLayoutItem[] = [];
+  for (const w of widgets) {
+    if (cursorX + w.defaultW > COLS) {
+      cursorX = 0;
+      cursorY += rowMaxH;
+      rowMaxH = 0;
+    }
+    result.push({ i: w.id, x: cursorX, y: cursorY, w: w.defaultW, h: w.defaultH });
+    cursorX += w.defaultW;
+    rowMaxH = Math.max(rowMaxH, w.defaultH);
+  }
+  return result;
+}
+
 export default function DashboardGrid({ editing }: { editing: boolean }) {
   const activeIds = useLedgerStore((s) => s.dashboardWidgets);
   const savedLayout = useLedgerStore((s) => s.dashboardLayout);
@@ -22,18 +42,21 @@ export default function DashboardGrid({ editing }: { editing: boolean }) {
     .filter((w): w is WidgetDef => Boolean(w));
 
   const layout: DashboardLayoutItem[] = useMemo(() => {
-    return active.map((w, index) => {
+    if (savedLayout.length === 0) {
+      // Nothing saved yet: pack everything cleanly in one pass.
+      return packLayout(active);
+    }
+    return active.map((w) => {
       const saved = savedLayout.find((l) => l.i === w.id);
       if (saved) return saved;
-      return {
-        i: w.id,
-        x: (index * w.defaultW) % COLS,
-        y: Infinity,
-        w: w.defaultW,
-        h: w.defaultH,
-      };
+      // A single newly-added widget: append it after everything else.
+      return { i: w.id, x: 0, y: Infinity, w: w.defaultW, h: w.defaultH };
     });
   }, [active, savedLayout]);
+
+  function tidyUp() {
+    setDashboardLayout(packLayout(active));
+  }
 
   if (active.length === 0) return null;
 
@@ -51,11 +74,22 @@ export default function DashboardGrid({ editing }: { editing: boolean }) {
       `}</style>
 
       <div className="hidden md:block">
+        {editing && (
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={tidyUp}
+              className="text-xs px-3 py-1.5 rounded-full border border-rule text-ink-soft hover:border-ink hover:text-ink transition-colors"
+            >
+              Riordina automaticamente
+            </button>
+          </div>
+        )}
         <ResponsiveGrid
           cols={COLS}
           rowHeight={ROW_HEIGHT}
           layout={layout}
           margin={[16, 16]}
+          compactType="vertical"
           isDraggable={editing}
           isResizable={editing}
           draggableHandle=".drag-handle"

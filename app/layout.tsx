@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Work_Sans } from "next/font/google";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 import MobileHeader from "@/components/MobileHeader";
+import InstallPrompt from "@/components/InstallPrompt";
 import ThemeApplier from "@/components/ThemeApplier";
 import OnboardingGate from "@/components/OnboardingGate";
 import "./globals.css";
@@ -45,6 +46,7 @@ export default function RootLayout({
         <Sidebar />
         <div className="flex-1 min-h-screen pb-16 md:pb-0">
           <MobileHeader />
+          <InstallPrompt />
           {children}
         </div>
         <MobileNav />

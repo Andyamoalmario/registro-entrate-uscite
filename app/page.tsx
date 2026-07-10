@@ -24,7 +24,7 @@ export default function DashboardPage() {
 
   return (
     <main className="w-full px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="font-display italic text-3xl text-ink">Dashboard</h1>
           <p className="text-sm text-ink-soft mt-1">
@@ -35,7 +35,7 @@ export default function DashboardPage() {
         </div>
         <button
           onClick={() => setEditing((e) => !e)}
-          className={`text-sm px-4 py-2 rounded-xl border transition-colors shrink-0 ${
+          className={`text-sm px-4 py-2 rounded-xl border transition-colors self-start sm:self-auto shrink-0 ${
             editing
               ? "bg-ink text-paper-raised border-ink"
               : "border-rule text-ink-soft hover:border-ink hover:text-ink"
