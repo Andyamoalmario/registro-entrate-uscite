@@ -31,7 +31,7 @@ export const THEMES: Theme[] = [
     swatch: "#355A70",
     tokens: {
       ink: "#355A70",
-      inkSoft: "#6E8A99",
+      inkSoft: "#4E6C7D",
       paper: "#F5FAFC",
       paperRaised: "#FFFFFF",
       rule: "#D9EAF1",
@@ -54,7 +54,7 @@ export const THEMES: Theme[] = [
     swatch: "#4C6B54",
     tokens: {
       ink: "#3F5B45",
-      inkSoft: "#7A9280",
+      inkSoft: "#587465",
       paper: "#F6FAF6",
       paperRaised: "#FFFFFF",
       rule: "#DCEBDF",
@@ -77,7 +77,7 @@ export const THEMES: Theme[] = [
     swatch: "#8A5D6B",
     tokens: {
       ink: "#7A4D5A",
-      inkSoft: "#A5808C",
+      inkSoft: "#8A5D6B",
       paper: "#FBF6F7",
       paperRaised: "#FFFFFF",
       rule: "#F0DEE3",
@@ -100,7 +100,7 @@ export const THEMES: Theme[] = [
     swatch: "#3A3F47",
     tokens: {
       ink: "#2E333A",
-      inkSoft: "#6B7280",
+      inkSoft: "#4A4F57",
       paper: "#F4F5F6",
       paperRaised: "#FFFFFF",
       rule: "#DDE1E6",
@@ -123,7 +123,7 @@ export const THEMES: Theme[] = [
     swatch: "#1B2E4A",
     tokens: {
       ink: "#182A44",
-      inkSoft: "#5A6B85",
+      inkSoft: "#3F506A",
       paper: "#F4F6FA",
       paperRaised: "#FFFFFF",
       rule: "#DBE2EE",
@@ -146,7 +146,7 @@ export const THEMES: Theme[] = [
     swatch: "#2F4A38",
     tokens: {
       ink: "#28402F",
-      inkSoft: "#6B8272",
+      inkSoft: "#4C6357",
       paper: "#F5F7F4",
       paperRaised: "#FFFFFF",
       rule: "#DCE5DD",

@@ -118,8 +118,7 @@ function FondoCasaWidget() {
       {split && (
         <>
           <p className="text-xs text-ink-soft mt-3">
-            {salaries.person1Name} {split.pct1.toFixed(0)}% · {salaries.person2Name}{" "}
-            {split.pct2.toFixed(0)}%
+            Versate entrambi il {split.sharedPct.toFixed(1)}% dello stipendio
           </p>
           <p
             className="text-xs mt-2 pt-2 border-t border-rule-soft"

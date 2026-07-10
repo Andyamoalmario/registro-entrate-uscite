@@ -391,6 +391,7 @@ export function debtTotals(debts: DebtEntry[]): {
 }
 
 export interface HouseholdSplit {
+  sharedPct: number;
   pct1: number;
   pct2: number;
   amount1: number;
@@ -405,7 +406,9 @@ export function householdSplit(
   if (total <= 0) return null;
   const pct1 = (salaries.person1Salary / total) * 100;
   const pct2 = (salaries.person2Salary / total) * 100;
+  const sharedPct = (totalExpenses / total) * 100;
   return {
+    sharedPct,
     pct1,
     pct2,
     amount1: (totalExpenses * pct1) / 100,

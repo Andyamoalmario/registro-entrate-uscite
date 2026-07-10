@@ -3,7 +3,7 @@
 :root {
   /* Pastel palette — azzurro come colore principale */
   --ink: #355A70;          /* azzurro scuro/petrolio — headers, primary text, pannelli */
-  --ink-soft: #6E8A99;     /* secondary text, grigio-azzurro */
+  --ink-soft: #4E6C7D;     /* secondary text, grigio-azzurro (scurito per leggibilita) */
   --paper: #F5FAFC;        /* azzurro-bianco molto chiaro, sfondo */
   --paper-raised: #FFFFFF; /* card surface, pure white */
   --rule: #D9EAF1;         /* hairline, azzurro pastello */

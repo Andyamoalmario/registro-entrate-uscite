@@ -16,7 +16,7 @@ export default function PortfolioSummary({
   return (
     <div className="scallop-edge bg-ink text-paper-raised rounded-2xl px-5 sm:px-7 py-5 sm:py-6 flex flex-wrap items-end justify-between gap-4 sm:gap-6">
       <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1.5 font-medium">
+        <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/75 mb-1.5 font-medium">
           Valore portafoglio
         </p>
         <p
@@ -28,7 +28,7 @@ export default function PortfolioSummary({
       </div>
       <div className="flex gap-4 sm:gap-8 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
+          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/75 mb-1 font-medium">
             Capitale investito
           </p>
           <p className="tabular text-lg text-paper-raised/90">
@@ -36,7 +36,7 @@ export default function PortfolioSummary({
           </p>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/55 mb-1 font-medium">
+          <p className="text-xs uppercase tracking-[0.2em] text-paper-raised/75 mb-1 font-medium">
             Guadagno/Perdita
           </p>
           <p

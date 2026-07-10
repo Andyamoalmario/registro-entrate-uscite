@@ -38,8 +38,12 @@ export default function HouseholdAnalyst({
         Analista fondo casa
       </p>
       <p className="text-sm text-ink-soft mb-4">
-        Spese fisse totali: <span className="tabular font-medium text-ink">{formatEuro(total)}</span>{" "}
-        al mese, divise in proporzione allo stipendio di ciascuno.
+        Per coprire {formatEuro(total)} di spese fisse al mese, versate entrambi lo
+        stesso{" "}
+        <span className="tabular font-semibold text-ink">
+          {split.sharedPct.toFixed(1)}%
+        </span>{" "}
+        del vostro stipendio netto nel fondo comune.
       </p>
 
       <div className="grid sm:grid-cols-2 gap-3 mb-4">
@@ -49,7 +53,7 @@ export default function HouseholdAnalyst({
             {formatEuro(split.amount1)}
           </p>
           <p className="text-xs text-ink-soft mt-1">
-            {split.pct1.toFixed(0)}% del reddito familiare — quota dovuta
+            {split.sharedPct.toFixed(1)}% di {formatEuro(salaries.person1Salary)}
           </p>
           <p className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
             Ha pagato finora:{" "}
@@ -62,7 +66,7 @@ export default function HouseholdAnalyst({
             {formatEuro(split.amount2)}
           </p>
           <p className="text-xs text-ink-soft mt-1">
-            {split.pct2.toFixed(0)}% del reddito familiare — quota dovuta
+            {split.sharedPct.toFixed(1)}% di {formatEuro(salaries.person2Salary)}
           </p>
           <p className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
             Ha pagato finora:{" "}
