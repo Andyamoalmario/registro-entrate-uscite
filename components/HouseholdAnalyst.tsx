@@ -1,16 +1,20 @@
 "use client";
 
 import { HouseholdSalaries } from "@/lib/types";
-import { formatEuro, householdSplit } from "@/lib/format";
+import { formatEuro, householdSettlement } from "@/lib/format";
+import { HouseholdExpense } from "@/lib/types";
 
 export default function HouseholdAnalyst({
   salaries,
-  totalExpenses,
+  expenses,
 }: {
   salaries: HouseholdSalaries;
-  totalExpenses: number;
+  expenses: HouseholdExpense[];
 }) {
-  const split = householdSplit(salaries, totalExpenses);
+  const { total, split, paid1, paid2, balance } = householdSettlement(
+    expenses,
+    salaries
+  );
 
   if (!split) {
     return (
@@ -26,35 +30,69 @@ export default function HouseholdAnalyst({
     );
   }
 
+  const settled = Math.abs(balance) < 0.5;
+
   return (
     <div className="bg-paper-raised border border-rule rounded-2xl p-5">
       <p className="text-xs uppercase tracking-[0.15em] text-ink-soft mb-4">
         Analista fondo casa
       </p>
       <p className="text-sm text-ink-soft mb-4">
-        Spese fisse totali: <span className="tabular font-medium text-ink">{formatEuro(totalExpenses)}</span>{" "}
+        Spese fisse totali: <span className="tabular font-medium text-ink">{formatEuro(total)}</span>{" "}
         al mese, divise in proporzione allo stipendio di ciascuno.
       </p>
 
-      <div className="grid sm:grid-cols-2 gap-3">
+      <div className="grid sm:grid-cols-2 gap-3 mb-4">
         <div className="rounded-xl p-4" style={{ background: "var(--accent-soft)" }}>
           <p className="text-sm font-medium text-ink">{salaries.person1Name}</p>
           <p className="tabular text-2xl font-semibold text-ink mt-1">
             {formatEuro(split.amount1)}
           </p>
           <p className="text-xs text-ink-soft mt-1">
-            {split.pct1.toFixed(0)}% del reddito familiare
+            {split.pct1.toFixed(0)}% del reddito familiare — quota dovuta
+          </p>
+          <p className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
+            Ha pagato finora:{" "}
+            <span className="tabular font-medium">{formatEuro(paid1)}</span>
           </p>
         </div>
-        <div className="rounded-xl p-4" style={{ background: "var(--accent-soft)" }}>
+        <div className="rounded-xl p-4" style={{ background: "var(--invest-soft)" }}>
           <p className="text-sm font-medium text-ink">{salaries.person2Name}</p>
           <p className="tabular text-2xl font-semibold text-ink mt-1">
             {formatEuro(split.amount2)}
           </p>
           <p className="text-xs text-ink-soft mt-1">
-            {split.pct2.toFixed(0)}% del reddito familiare
+            {split.pct2.toFixed(0)}% del reddito familiare — quota dovuta
+          </p>
+          <p className="text-xs text-ink-soft mt-2 pt-2 border-t border-rule-soft">
+            Ha pagato finora:{" "}
+            <span className="tabular font-medium">{formatEuro(paid2)}</span>
           </p>
         </div>
+      </div>
+
+      <div
+        className="rounded-xl p-4 text-sm"
+        style={{
+          background: settled ? "var(--income-soft)" : "var(--expense-soft)",
+          color: settled ? "var(--income)" : "var(--expense)",
+        }}
+      >
+        {settled ? (
+          <span>I conti sono in pari — nessuno deve nulla all&rsquo;altro.</span>
+        ) : balance > 0 ? (
+          <span>
+            <strong>{salaries.person2Name}</strong> deve dare{" "}
+            <strong className="tabular">{formatEuro(balance)}</strong> a{" "}
+            <strong>{salaries.person1Name}</strong> per pareggiare le quote.
+          </span>
+        ) : (
+          <span>
+            <strong>{salaries.person1Name}</strong> deve dare{" "}
+            <strong className="tabular">{formatEuro(-balance)}</strong> a{" "}
+            <strong>{salaries.person2Name}</strong> per pareggiare le quote.
+          </span>
+        )}
       </div>
     </div>
   );

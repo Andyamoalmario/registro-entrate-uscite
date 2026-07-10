@@ -13,10 +13,14 @@ export default function HouseholdExpenseForm({
 }) {
   const addHouseholdExpense = useLedgerStore((s) => s.addHouseholdExpense);
   const updateHouseholdExpense = useLedgerStore((s) => s.updateHouseholdExpense);
+  const salaries = useLedgerStore((s) => s.householdSalaries);
 
   const [name, setName] = useState(editing?.name ?? "");
   const [amount, setAmount] = useState(editing ? String(editing.amount) : "");
   const [note, setNote] = useState(editing?.note ?? "");
+  const [paidBy, setPaidBy] = useState<"person1" | "person2">(
+    editing?.paidBy ?? "person1"
+  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -28,12 +32,14 @@ export default function HouseholdExpenseForm({
         name: name.trim(),
         amount: parsed,
         note: note.trim() || undefined,
+        paidBy,
       });
     } else {
       addHouseholdExpense({
         name: name.trim(),
         amount: parsed,
         note: note.trim() || undefined,
+        paidBy,
       });
       setName("");
       setAmount("");
@@ -71,6 +77,34 @@ export default function HouseholdExpenseForm({
           className="mt-1 w-full border border-rule rounded-xl px-3 py-2 bg-paper focus:outline-none focus:border-ink"
         />
       </label>
+
+      <div>
+        <span className="text-xs text-ink-soft">Pagato da</span>
+        <div className="flex gap-2 mt-1">
+          <button
+            type="button"
+            onClick={() => setPaidBy("person1")}
+            className={`flex-1 py-2 text-sm font-medium rounded-xl border transition-colors ${
+              paidBy === "person1"
+                ? "bg-ink text-paper-raised border-ink"
+                : "border-rule text-ink-soft hover:border-ink"
+            }`}
+          >
+            {salaries.person1Name}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPaidBy("person2")}
+            className={`flex-1 py-2 text-sm font-medium rounded-xl border transition-colors ${
+              paidBy === "person2"
+                ? "bg-ink text-paper-raised border-ink"
+                : "border-rule text-ink-soft hover:border-ink"
+            }`}
+          >
+            {salaries.person2Name}
+          </button>
+        </div>
+      </div>
 
       <label className="block">
         <span className="text-xs text-ink-soft">Importo mensile (€)</span>

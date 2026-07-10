@@ -21,6 +21,7 @@ export default function ImportFromRegistro() {
     addHouseholdExpense({
       name: t.category,
       amount: t.amount,
+      paidBy: "person1",
       note: `Importato dal Registro${t.note ? " — " + t.note : ""} (${t.date.slice(
         8,
         10
@@ -32,7 +33,7 @@ export default function ImportFromRegistro() {
   return (
     <div className="bg-paper-raised border border-dashed border-rule rounded-2xl p-4">
       <p className="text-xs uppercase tracking-widest text-ink-soft mb-3">
-        Importa una spesa dal Registro
+        Importa una spesa dal Registro <span className="normal-case text-ink-soft/70">(risulterà pagata da te)</span>
       </p>
       <div className="flex flex-col sm:flex-row gap-2">
         <select

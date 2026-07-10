@@ -16,7 +16,7 @@ import {
   currentMonthKey,
   debtTotals,
   formatEuro,
-  householdSplit,
+  householdSettlement,
   lastNMonthsData,
   monthLabel,
   monthTotals,
@@ -106,8 +106,8 @@ function DebitiWidget() {
 function FondoCasaWidget() {
   const expenses = useLedgerStore((s) => s.householdExpenses);
   const salaries = useLedgerStore((s) => s.householdSalaries);
-  const total = expenses.reduce((sum, e) => sum + e.amount, 0);
-  const split = householdSplit(salaries, total);
+  const { total, split, balance } = householdSettlement(expenses, salaries);
+  const settled = Math.abs(balance) < 0.5;
   return (
     <div className="bg-paper-raised border border-rule rounded-2xl p-5">
       <p className="text-xs uppercase tracking-[0.15em] text-ink-soft mb-3">
@@ -116,10 +116,22 @@ function FondoCasaWidget() {
       <p className="tabular text-2xl text-ink font-medium">{formatEuro(total)}</p>
       <p className="text-xs text-ink-soft mt-0.5">spese fisse al mese</p>
       {split && (
-        <p className="text-xs text-ink-soft mt-3">
-          {salaries.person1Name} {split.pct1.toFixed(0)}% · {salaries.person2Name}{" "}
-          {split.pct2.toFixed(0)}%
-        </p>
+        <>
+          <p className="text-xs text-ink-soft mt-3">
+            {salaries.person1Name} {split.pct1.toFixed(0)}% · {salaries.person2Name}{" "}
+            {split.pct2.toFixed(0)}%
+          </p>
+          <p
+            className="text-xs mt-2 pt-2 border-t border-rule-soft"
+            style={{ color: settled ? "var(--income)" : "var(--expense)" }}
+          >
+            {settled
+              ? "Conti in pari"
+              : balance > 0
+              ? `${salaries.person2Name} deve ${formatEuro(balance)} a ${salaries.person1Name}`
+              : `${salaries.person1Name} deve ${formatEuro(-balance)} a ${salaries.person2Name}`}
+          </p>
+        </>
       )}
     </div>
   );

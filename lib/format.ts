@@ -1,4 +1,4 @@
-import { Transaction, Investment, DebtEntry, DEBT_TYPE_SIGN, HouseholdSalaries } from "./types";
+import { Transaction, Investment, DebtEntry, DEBT_TYPE_SIGN, HouseholdSalaries, HouseholdExpense } from "./types";
 
 export function formatEuro(value: number): string {
   return new Intl.NumberFormat("it-IT", {
@@ -411,4 +411,28 @@ export function householdSplit(
     amount1: (totalExpenses * pct1) / 100,
     amount2: (totalExpenses * pct2) / 100,
   };
+}
+
+export interface HouseholdSettlement {
+  total: number;
+  split: HouseholdSplit | null;
+  paid1: number;
+  paid2: number;
+  balance: number; // >0: person1 has overpaid, person2 owes them `balance`. <0: opposite.
+}
+
+export function householdSettlement(
+  expenses: HouseholdExpense[],
+  salaries: HouseholdSalaries
+): HouseholdSettlement {
+  const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const split = householdSplit(salaries, total);
+  const paid1 = expenses
+    .filter((e) => (e.paidBy ?? "person1") === "person1")
+    .reduce((sum, e) => sum + e.amount, 0);
+  const paid2 = expenses
+    .filter((e) => e.paidBy === "person2")
+    .reduce((sum, e) => sum + e.amount, 0);
+  const balance = split ? paid1 - split.amount1 : 0;
+  return { total, split, paid1, paid2, balance };
 }

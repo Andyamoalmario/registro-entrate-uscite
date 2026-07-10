@@ -49,6 +49,7 @@ export interface HouseholdExpense {
   name: string;
   amount: number;
   note?: string;
+  paidBy: "person1" | "person2";
 }
 
 export interface HouseholdSalaries {
